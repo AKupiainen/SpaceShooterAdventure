@@ -1,10 +1,15 @@
-#ifndef SHOOTER_H
-#define SHOOTER_H
-
-#include <vector>
 #include "Bullet.h"
-#include "BulletPath.h"
 #include <SDL2/SDL.h>
+#include <vector>
+
+class Shooter;
+class BulletPath;
+
+class Weapon {
+public:
+    virtual ~Weapon() = default;
+    virtual void Shoot(Shooter& shooter) = 0;
+};
 
 class Shooter {
 public:
@@ -12,18 +17,19 @@ public:
     ~Shooter();
 
     void Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const std::string& texturePath, double angle);
-
     void Update();
-    void Render(SDL_Renderer* renderer);
+    void Render(SDL_Renderer* renderer) const;
+
     void SetPosition(int x, int y);
+    void SetWeapon(std::unique_ptr<Weapon> weapon);
+
+    float GetTimeSinceLastShot() const;
 
 private:
     SDL_Renderer* renderer;
-    int playerX;
-    int playerY;
-    std::vector<Bullet*> bullets;
+    int playerX, playerY;
     float shootCooldown;
     float timeSinceLastShot;
+    std::vector<Bullet*> bullets;
+    std::unique_ptr<Weapon> currentWeapon;
 };
-
-#endif

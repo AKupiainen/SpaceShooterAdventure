@@ -23,14 +23,18 @@ set(SOURCE_FILES
         src/core/Time.h
         src/sprites/ParallaxLayer.cpp
         src/sprites/ParallaxLayer.h
-        src/bullets/Bullet.cpp
-        src/bullets/Bullet.h
-        src/bullets/BulletPath.cpp
-        src/bullets/BulletPath.h
-        src/bullets/StraightBulletPath.cpp
-        src/bullets/StraightBulletPath.h
-        src/bullets/Shooter.cpp
-        src/bullets/Shooter.h
+        src/shooting/Bullet.cpp
+        src/shooting/Bullet.h
+        src/shooting/BulletPath.cpp
+        src/shooting/BulletPath.h
+        src/shooting/StraightBulletPath.cpp
+        src/shooting/StraightBulletPath.h
+        src/shooting/Shooter.cpp
+        src/shooting/Shooter.h
+        src/shooting/StraightBulletWeapon.cpp
+        src/shooting/StraightBulletWeapon.h
+        src/player/EngineFlame.cpp
+        src/player/EngineFlame.h
 )
 
 # Create the executable

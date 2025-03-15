@@ -20,6 +20,7 @@ public:
     int GetPosY() const { return static_cast<int>(posY); }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
+
     SDL_Texture* GetTexture() const { return animator->GetTexture(); }
 
     void SetRotation(int angleIncrement) { rotationAngle = angleIncrement; }

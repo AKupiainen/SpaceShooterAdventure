@@ -1,11 +1,10 @@
 #include "Shooter.h"
 #include "Bullet.h"
-#include <SDL2/SDL.h>
-#include <iostream>
 #include "../core/Time.h"
+#include <iostream>
 
 Shooter::Shooter(SDL_Renderer* renderer, int playerX, int playerY)
-    : renderer(renderer), playerX(playerX), playerY(playerY), shootCooldown(0.5f), timeSinceLastShot(0.0f) {
+    : renderer(renderer), playerX(playerX), playerY(playerY), shootCooldown(0.5f), timeSinceLastShot(0.0f), currentWeapon(nullptr) {
 }
 
 Shooter::~Shooter() {
@@ -26,7 +25,6 @@ void Shooter::Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const s
 }
 
 void Shooter::Update() {
-
     for (auto it = bullets.begin(); it != bullets.end();) {
         Bullet* bullet = *it;
         bullet->Update();
@@ -40,10 +38,13 @@ void Shooter::Update() {
     }
 
     timeSinceLastShot += Time::GetDeltaTime();
+
+    if (currentWeapon) {
+        currentWeapon->Shoot(*this);
+    }
 }
 
-void Shooter::Render(SDL_Renderer* renderer) {
-
+void Shooter::Render(SDL_Renderer* renderer) const {
     for (Bullet* bullet : bullets) {
         bullet->Render(renderer);
     }
@@ -52,4 +53,12 @@ void Shooter::Render(SDL_Renderer* renderer) {
 void Shooter::SetPosition(int x, int y) {
     playerX = x;
     playerY = y;
+}
+
+void Shooter::SetWeapon(std::unique_ptr<Weapon> weapon) {
+    currentWeapon = std::move(weapon);
+}
+
+float Shooter::GetTimeSinceLastShot() const {
+    return timeSinceLastShot;
 }

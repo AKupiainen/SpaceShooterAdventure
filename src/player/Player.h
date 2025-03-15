@@ -1,11 +1,9 @@
-#ifndef PLAYER_H
-#define PLAYER_H
-
-#include <SDL_render.h>
+#pragma once
 
 #include "../core/GameEntity.h"
-#include "../sprites/SpriteAnimator.h"
-#include "../bullets/Shooter.h"
+#include "EngineFlame.h"
+#include "../shooting/Shooter.h"
+#include <SDL2/SDL.h>
 
 class Player : public GameEntity {
 public:
@@ -17,10 +15,15 @@ public:
     void Render(SDL_Renderer* renderer) override;
 
 private:
-    float maxSpeedX, maxSpeedY;
-    float acceleration, deceleration;
-    SpriteAnimator engineFlame;
-    Shooter shooter;
-};
+    void HandleMovement(const Uint8* keystate);
+    void HandleMouseMovement();
+    void ClampVelocity();
+    void ApplyDeceleration();
 
-#endif
+    EngineFlame engineFlame;
+    Shooter shooter;
+
+    float velocityX, velocityY;
+    const float maxSpeedX, maxSpeedY;
+    const float acceleration, deceleration;
+};

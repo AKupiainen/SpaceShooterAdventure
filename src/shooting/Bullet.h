@@ -17,8 +17,8 @@ public:
     bool IsActive() const { return active; }
 
 private:
-    BulletPath* path; // Bullet's movement path
-    bool active = true; // Active state of the bullet
+    BulletPath* path;
+    bool active = true;
 };
 
-#endif // BULLET_H
+#endif
