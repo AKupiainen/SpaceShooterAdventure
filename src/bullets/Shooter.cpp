@@ -25,7 +25,6 @@ void Shooter::Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const s
     }
 }
 
-
 void Shooter::Update() {
 
     for (auto it = bullets.begin(); it != bullets.end();) {

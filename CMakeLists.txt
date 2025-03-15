@@ -1,7 +1,7 @@
 # Set SDL2 and SDL2_image paths
 set(SDL2_DIR "/opt/homebrew/opt/sdl2/share/cmake/SDL2")
 set(SDL2_IMAGE_DIR "/opt/homebrew/Cellar/sdl2_image/2.8.8/share/cmake/SDL2_image")
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
