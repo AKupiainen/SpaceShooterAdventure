@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+assets/.DS_Store
+assets/sprites/.DS_Store
+assets/sprites/bullets/.DS_Store
+.DS_Store
