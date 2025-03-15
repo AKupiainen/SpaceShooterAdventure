@@ -18,7 +18,7 @@ Shooter::~Shooter() {
 void Shooter::Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const std::string& texturePath, double angle) {
     if (timeSinceLastShot >= shootCooldown) {
         auto newBullet = new Bullet(renderer, playerX, playerY, path, bulletWidth, bulletHeight, texturePath);
-        newBullet->SetRotation(angle); 
+        newBullet->SetRotation(angle);
         bullets.push_back(newBullet);
 
         timeSinceLastShot = 0.0f;
@@ -40,7 +40,7 @@ void Shooter::Update() {
         }
     }
 
-    timeSinceLastShot += Time::GetDeltaTime() * 1000.0f;
+    timeSinceLastShot += Time::GetDeltaTime();
 }
 
 void Shooter::Render(SDL_Renderer* renderer) {
