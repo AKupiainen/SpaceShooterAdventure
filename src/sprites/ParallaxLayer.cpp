@@ -21,7 +21,7 @@ ParallaxLayer::ParallaxLayer(SDL_Renderer* renderer, const char* filePath, float
         return;
     }
 
-    SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight);
+    SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
     isLoaded = true;
 }
 
@@ -37,7 +37,8 @@ void ParallaxLayer::Update(float deltaTime) {
     if (scrollPosition < 0) scrollPosition += textureHeight;
 }
 
-void ParallaxLayer::Render(SDL_Renderer* renderer) {
+void ParallaxLayer::Render(SDL_Renderer* renderer) const {
+
     if (!isLoaded || !texture) return;
 
     int yOffset = static_cast<int>(scrollPosition);
@@ -46,5 +47,5 @@ void ParallaxLayer::Render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, texture, NULL, &destRect1);
 
     SDL_Rect destRect2 = { 0, textureHeight - yOffset, textureWidth, textureHeight };
-    SDL_RenderCopy(renderer, texture, NULL, &destRect2);
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect2);
 }

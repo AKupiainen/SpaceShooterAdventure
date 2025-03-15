@@ -2,9 +2,8 @@
 #define PARALLAX_LAYER_H
 #include <SDL2/SDL.h>
 
-
 class ParallaxLayer {
-private:
+
     SDL_Texture* texture;
     int textureWidth, textureHeight;
     float speed;
@@ -16,7 +15,7 @@ public:
     ~ParallaxLayer();
 
     void Update(float deltaTime);
-    void Render(SDL_Renderer* renderer);
+    void Render(SDL_Renderer* renderer) const;
 };
 
 #endif

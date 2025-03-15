@@ -16,21 +16,21 @@ include_directories(
 
 set(SOURCE_FILES
         src/main.cpp
-        src/SpriteAnimator.cpp
-        src/GameEntity.cpp
-        src/Player.cpp
-        src/Time.cpp
-        src/Time.h
-        src/ParallaxLayer.cpp
-        src/ParallaxLayer.h
-        src/Bullet.cpp
-        src/Bullet.h
-        src/BulletPath.cpp
-        src/BulletPath.h
-        src/StraightBulletPath.cpp
-        src/StraightBulletPath.h
-        src/Shooter.cpp
-        src/Shooter.h
+        src/sprites/SpriteAnimator.cpp
+        src/core/GameEntity.cpp
+        src/player/Player.cpp
+        src/core/Time.cpp
+        src/core/Time.h
+        src/sprites/ParallaxLayer.cpp
+        src/sprites/ParallaxLayer.h
+        src/bullets/Bullet.cpp
+        src/bullets/Bullet.h
+        src/bullets/BulletPath.cpp
+        src/bullets/BulletPath.h
+        src/bullets/StraightBulletPath.cpp
+        src/bullets/StraightBulletPath.h
+        src/bullets/Shooter.cpp
+        src/bullets/Shooter.h
 )
 
 # Create the executable

@@ -20,8 +20,8 @@ float Time::lastFpsUpdateTime = 0.0f;
 
 void Time::Init() {
 
-    auto now = std::chrono::high_resolution_clock::now();
-    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    const auto now = std::chrono::high_resolution_clock::now();
+    const auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
         now.time_since_epoch()).count();
 
     currentTime = static_cast<float>(nanoseconds) / 1e9f;
@@ -37,9 +37,8 @@ void Time::Update() {
         throw std::runtime_error("Time system not initialized. Call Time::Init() first.");
     }
 
-    // Get current time
-    auto now = std::chrono::high_resolution_clock::now();
-    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    const auto now = std::chrono::high_resolution_clock::now();
+    const auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
         now.time_since_epoch()).count();
 
     currentTime = static_cast<float>(nanoseconds) / 1e9f;
@@ -80,10 +79,10 @@ void Time::LimitFrameRate() {
         throw std::runtime_error("Time system not initialized. Call Time::Init() first.");
     }
 
-    float frameEnd = previousTime + frameTimeTarget;
+    const float frameEnd = previousTime + frameTimeTarget;
 
-    auto now = std::chrono::high_resolution_clock::now();
-    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
+    const auto now = std::chrono::high_resolution_clock::now();
+    const auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(
         now.time_since_epoch()).count();
 
     float currentTimeNow = static_cast<float>(nanoseconds) / 1e9f;

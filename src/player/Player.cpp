@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "SDL2/SDL.h"
 #include <iostream>
-#include "StraightBulletPath.h"
+#include "../bullets/StraightBulletPath.h"
 
 Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
                int frameDelay, int rows, int columns, int x, int y)

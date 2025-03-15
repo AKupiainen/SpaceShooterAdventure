@@ -1,7 +1,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "GameEntity.h"
+#include "../core/GameEntity.h"
 #include "BulletPath.h"
 #include <string>
 

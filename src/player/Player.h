@@ -1,9 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "GameEntity.h"
-#include "SpriteAnimator.h"
-#include "Shooter.h"
+#include <SDL_render.h>
+
+#include "../core/GameEntity.h"
+#include "../sprites/SpriteAnimator.h"
+#include "../bullets/Shooter.h"
 
 class Player : public GameEntity {
 public:
@@ -17,8 +19,8 @@ public:
 private:
     float maxSpeedX, maxSpeedY;
     float acceleration, deceleration;
-    SpriteAnimator engineFlame;  // SpriteAnimator for engine flame
-    Shooter shooter;  // Shooter for handling bullet firing
+    SpriteAnimator engineFlame;
+    Shooter shooter;
 };
 
 #endif

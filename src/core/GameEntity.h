@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include "SpriteAnimator.h"
+#include "../sprites/SpriteAnimator.h"
 
 class GameEntity {
 public:

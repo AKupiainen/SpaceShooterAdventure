@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include <SDL2/SDL.h>
 #include <iostream>
-#include "Time.h"
+#include "../core/Time.h"
 
 Shooter::Shooter(SDL_Renderer* renderer, int playerX, int playerY)
     : renderer(renderer), playerX(playerX), playerY(playerY), shootCooldown(0.5f), timeSinceLastShot(0.0f) {
@@ -17,8 +17,8 @@ Shooter::~Shooter() {
 
 void Shooter::Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const std::string& texturePath, double angle) {
     if (timeSinceLastShot >= shootCooldown) {
-        Bullet* newBullet = new Bullet(renderer, playerX, playerY, path, bulletWidth, bulletHeight, texturePath);
-        newBullet->SetRotation(angle);  // Set the bullet's angle
+        auto newBullet = new Bullet(renderer, playerX, playerY, path, bulletWidth, bulletHeight, texturePath);
+        newBullet->SetRotation(angle); 
         bullets.push_back(newBullet);
 
         timeSinceLastShot = 0.0f;

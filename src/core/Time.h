@@ -13,7 +13,7 @@ public:
     static float GetAccumulatedTime();
     static float GetTimeScale();
     static float GetCurrentTime();
-    static float GetAlpha();  // For interpolation
+    static float GetAlpha();
     static float GetTargetFrameRate();
     static float GetActualFrameRate();
 

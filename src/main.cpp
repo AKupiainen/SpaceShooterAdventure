@@ -1,9 +1,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include "Time.h"
-#include "Player.h"
-#include "ParallaxLayer.h"
+#include "core/Time.h"
+#include "player/Player.h"
+#include "sprites/ParallaxLayer.h"
 
 
 void FixedUpdate(Player& player) {

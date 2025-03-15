@@ -24,12 +24,14 @@ SpriteAnimator::SpriteAnimator(SDL_Renderer* renderer, const std::string& textur
 }
 
 SpriteAnimator::~SpriteAnimator() {
+
     if (texture) {
         SDL_DestroyTexture(texture);
     }
 }
 
 void SpriteAnimator::Update() {
+
     Uint32 currentTime = SDL_GetTicks();
 
     if (currentTime - lastFrameTime >= frameDelay) {
@@ -43,6 +45,7 @@ void SpriteAnimator::Update() {
 }
 
 SDL_Rect SpriteAnimator::GetCurrentFrameRect() const {
+
     int row = currentFrameIndex / columns;
     int col = currentFrameIndex % columns;
 

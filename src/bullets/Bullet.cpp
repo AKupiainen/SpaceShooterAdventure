@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "BulletPath.h"
 #include <iostream>
+#include <SDL_render.h>
 
 Bullet::Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath)
     : GameEntity(renderer, texturePath, width, height, 100, 1, 1, x, y), path(path) {}
@@ -26,7 +27,7 @@ void Bullet::Update() {
 
 void Bullet::Render(SDL_Renderer* renderer) {
 
-    if (active && GetTexture()) {  // Ensure texture is valid
+    if (active && GetTexture()) {
         SDL_Rect renderRect = { static_cast<int>(posX), static_cast<int>(posY), GetWidth(), GetHeight() };
         SDL_Point center = { GetWidth() / 2, GetHeight() / 2 };
 
