@@ -11,13 +11,9 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
       shooter(renderer, x, y),
       velocityX(0), velocityY(0), maxSpeedX(300), maxSpeedY(300), acceleration(5.0f), deceleration(4.0f) {
 
-    // Change the default weapon to ShotgunWeapon
     weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f, 20);
-
-    // Set the weapon for the shooter
     shooter.SetWeapon(weapon.get());
 }
-
 
 Player::~Player() {}
 
