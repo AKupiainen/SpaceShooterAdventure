@@ -44,6 +44,8 @@ public:
 
     CollisionBox& GetCollisionBox() { return collisionBox; }
 
+    virtual void OnCollisionEnter(GameEntity& other);
+
 protected:
     double posX, posY;
     double velocityX, velocityY;

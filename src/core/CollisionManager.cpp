@@ -16,13 +16,14 @@ void CollisionManager::CheckCollisions() const {
     for (size_t i = 0; i < entities.size(); ++i) {
         for (size_t j = i + 1; j < entities.size(); ++j) {
             if (entities[i]->CheckCollision(*entities[j])) {
-                if (callback) {
-                    callback(*entities[i], *entities[j]);
-                }
+                // Call OnCollisionEnter for both entities involved
+                entities[i]->OnCollisionEnter(*entities[j]);
+                entities[j]->OnCollisionEnter(*entities[i]);
             }
         }
     }
 }
+
 
 void CollisionManager::DrawCollisionBoxes(SDL_Renderer* renderer) const {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);

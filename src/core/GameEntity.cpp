@@ -36,3 +36,14 @@ bool GameEntity::CheckCollision(const GameEntity& other) const {
 void GameEntity::UpdateCollisionBox() {
     collisionBox.SetPosition(static_cast<int>(posX), static_cast<int>(posY));
 }
+
+// The OnCollisionEnter method, which gets triggered when a collision is detected
+void GameEntity::OnCollisionEnter(GameEntity& other) {
+    // Default behavior: Print a message when collision occurs
+    std::cout << "Collision detected between " << this << " and " << &other << std::endl;
+
+    // You can customize this method to handle collision reactions, such as:
+    // - Playing a sound effect
+    // - Adjusting velocities (bounce back effect)
+    // - Reducing health, etc.
+}
