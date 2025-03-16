@@ -59,13 +59,13 @@ SDL_Rect SpriteAnimator::GetCurrentFrameRect() const {
 }
 
 void SpriteAnimator::Render(SDL_Renderer* renderer, int x, int y, double angle) const {
+
     SDL_Rect sourceRect = GetCurrentFrameRect();
 
     int newWidth = frameWidth;
     int newHeight = frameHeight;
 
     SDL_Rect destRect = { x, y, newWidth, newHeight };
-
     SDL_RenderCopyEx(renderer, texture, &sourceRect, &destRect, angle, nullptr, SDL_FLIP_NONE);
 }
 
