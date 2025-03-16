@@ -41,5 +41,8 @@ assets/sprites/bullets/.DS_Store
 .idea/SpaceShooterAdventure.iml
 .idea/vcs.xml
 .idea
-cmake-build-*
 
+cmake-build*/
+CMakeCache.txt
+CMakeFiles/
+*.cmake
