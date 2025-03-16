@@ -3,6 +3,7 @@
 
 void CollisionManager::AddEntity(GameEntity* entity) {
     entities.push_back(entity);
+    std::cout << "Entity added to CollisionManager. Total entities: " << entities.size() << std::endl;
 }
 
 void CollisionManager::RegisterCallback(CollisionCallback callback) {

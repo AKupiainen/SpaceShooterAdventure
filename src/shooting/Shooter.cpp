@@ -24,6 +24,7 @@ void Shooter::Update() {
         bullet->Update();
 
         if (!bullet->IsActive()) {
+
             delete bullet;
             it = bullets.erase(it);
         } else {

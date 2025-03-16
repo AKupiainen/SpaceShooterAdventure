@@ -30,9 +30,8 @@ bool Initialize(SDL_Renderer* renderer) {
     collisionManager = new CollisionManager();
     collisionManager->AddEntity(player);
 
-    DependencyInjection::Register<CollisionManager>([]() {
-        return std::make_shared<CollisionManager>();
-    });
+    DependencyInjection::RegisterSingleton<CollisionManager>(
+    []() { return std::make_shared<CollisionManager>(); });
 
     return true;
 }
