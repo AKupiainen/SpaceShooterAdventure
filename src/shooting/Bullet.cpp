@@ -5,9 +5,6 @@
 
 Bullet::Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath)
     : GameEntity(renderer, texturePath, width, height, 100, 1, 1, x, y), path(path) {
-    // Initialize the collision box from the GameEntity base class
-    collisionBox.SetPosition(x, y);
-    collisionBox = CollisionBox(x, y, width, height);
 }
 
 Bullet::~Bullet() {
@@ -20,7 +17,7 @@ void Bullet::Update() {
         path->Update(posX, posY, rotationAngle);
     }
 
-    collisionBox.SetPosition(static_cast<int>(posX), static_cast<int>(posY));
+    UpdateCollisionBox();
 
     SDL_Window* window = SDL_GetWindowFromID(1);
     int windowWidth, windowHeight;

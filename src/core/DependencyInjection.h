@@ -17,7 +17,7 @@ public:
     static std::shared_ptr<T> Resolve() {
         auto typeIndex = std::type_index(typeid(T));
         if (factories.find(typeIndex) != factories.end()) {
-            auto factory = factories[typeIndex];
+            const auto factory = factories[typeIndex];
             return std::static_pointer_cast<T>(factory());
         }
         return nullptr;

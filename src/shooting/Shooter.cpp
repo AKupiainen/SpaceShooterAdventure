@@ -52,6 +52,15 @@ void Shooter::SetPosition(int x, int y) {
 
 void Shooter::AddBullet(Bullet* bullet) {
     bullets.push_back(bullet);
-    std::shared_ptr<CollisionManager> collisionManager = DependencyInjection::Resolve<CollisionManager>();
-    collisionManager->AddEntity(bullet);
+
+    // Resolve CollisionManager
+    const std::shared_ptr<CollisionManager> collisionManager = DependencyInjection::Resolve<CollisionManager>();
+
+    // Check if the collisionManager is valid
+    if (collisionManager) {
+        std::cout << "CollisionManager successfully resolved!" << std::endl;
+        collisionManager->AddEntity(bullet);
+    } else {
+        std::cout << "Failed to resolve CollisionManager!" << std::endl;
+    }
 }
