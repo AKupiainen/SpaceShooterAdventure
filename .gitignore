@@ -34,3 +34,12 @@ assets/.DS_Store
 assets/sprites/.DS_Store
 assets/sprites/bullets/.DS_Store
 .DS_Store
+.idea/editor.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/SpaceShooterAdventure.iml
+.idea/vcs.xml
+.idea
+cmake-build-*
+
