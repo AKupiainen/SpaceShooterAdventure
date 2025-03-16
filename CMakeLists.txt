@@ -42,6 +42,8 @@ set(SOURCE_FILES
         src/core/CollisionManager.h
         src/core/DependencyInjection.h
         src/core/DependencyInjection.cpp
+        src/helpers/DebugLog.cpp
+        src/helpers/DebugLog.h
 )
 
 # Create the executable

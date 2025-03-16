@@ -11,6 +11,8 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
       shooter(renderer, x, y),
       velocityX(0), velocityY(0), maxSpeedX(300), maxSpeedY(300), acceleration(5.0f), deceleration(4.0f) {
 
+    SetTag("Player");
+
     weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f, 20);
     shooter.SetWeapon(weapon.get());
 }
@@ -55,6 +57,11 @@ void Player::Render(SDL_Renderer* renderer)  {
 
     engineFlame.Render(renderer, GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 180.0f);
     shooter.Render(renderer);
+}
+
+void Player::OnCollisionEnter(GameEntity &other)
+{
+
 }
 
 void Player::HandleMovement(const Uint8* keystate) {

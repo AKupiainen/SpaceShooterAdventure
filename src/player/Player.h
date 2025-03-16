@@ -14,6 +14,7 @@ public:
 
     void Update() override;
     void Render(SDL_Renderer* renderer) override;
+    void OnCollisionEnter(GameEntity& other) override;
 
 private:
     void HandleMovement(const Uint8* keystate);

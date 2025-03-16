@@ -48,7 +48,6 @@ public:
     void SetTag(const std::string& newTag) { tag = newTag; }
     const std::string& GetTag() const { return tag; }
 
-    // Virtual function for collision handling
     virtual void OnCollisionEnter(GameEntity& other);
 
 protected:

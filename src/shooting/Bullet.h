@@ -10,8 +10,9 @@ public:
     Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath);
     ~Bullet();
 
-    void Update();
-    void Render(SDL_Renderer* renderer);
+    void Update() override;
+    void Render(SDL_Renderer* renderer) override;
+    void OnCollisionEnter(GameEntity &other) override;
 
     bool IsActive() const { return active; }
 
