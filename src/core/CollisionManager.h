@@ -2,24 +2,21 @@
 #define COLLISIONMANAGER_H
 
 #include <vector>
-#include <functional>
 #include "GameEntity.h"
+#include <SDL2/SDL.h>
 
 class CollisionManager {
 public:
-
-    using CollisionCallback = std::function<void(GameEntity&, GameEntity&)>;
-
-    CollisionManager() = default;
-    ~CollisionManager() = default;
+    using CollisionCallback = void(*)(GameEntity& entity1, GameEntity& entity2);
 
     void AddEntity(GameEntity* entity);
     void RegisterCallback(CollisionCallback callback);
     void CheckCollisions() const;
+    void DrawCollisionBoxes(SDL_Renderer* renderer) const;
 
 private:
     std::vector<GameEntity*> entities;
-    CollisionCallback callback;
+    CollisionCallback callback = nullptr;
 };
 
 #endif

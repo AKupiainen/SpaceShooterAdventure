@@ -38,6 +38,8 @@ void Player::Update() {
     if (posY < 0) posY = 0;
     if (posY + GetHeight() > windowHeight) posY = windowHeight - GetHeight();
 
+    UpdateCollisionBox();
+
     animator->Update();
     engineFlame.Update();
 

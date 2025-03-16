@@ -40,6 +40,8 @@ set(SOURCE_FILES
         src/shooting/ShotgunWeapon.h
         src/core/CollisionManager.cpp
         src/core/CollisionManager.h
+        src/core/DependencyInjection.cpp
+        src/core/DependencyInjection.h
 )
 
 # Create the executable

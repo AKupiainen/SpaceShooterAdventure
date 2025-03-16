@@ -5,6 +5,7 @@
 #include "player/Player.h"
 #include "sprites/ParallaxLayer.h"
 #include "core/CollisionManager.h"
+#include "core/DependencyInjection.h"
 
 ParallaxLayer* layer1 = nullptr;
 ParallaxLayer* layer2 = nullptr;
@@ -29,6 +30,10 @@ bool Initialize(SDL_Renderer* renderer) {
     collisionManager = new CollisionManager();
     collisionManager->AddEntity(player);
 
+    DependencyInjection::Register<CollisionManager>([]() {
+        return std::make_shared<CollisionManager>();
+    });
+
     return true;
 }
 
@@ -46,6 +51,8 @@ void Render(SDL_Renderer* renderer) {
     layer2->Render(renderer);
 
     player->Render(renderer);
+
+    collisionManager->DrawCollisionBoxes(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -100,10 +107,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    if (!Initialize(renderer)) {
-        std::cerr << "Initialization failed!" << std::endl;
-        return 1;
-    }
+    Initialize(renderer);
 
     bool running = true;
     SDL_Event e;

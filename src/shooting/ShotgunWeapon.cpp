@@ -2,7 +2,6 @@
 #include "Shooter.h"
 #include "Bullet.h"
 #include "StraightBulletPath.h"
-#include <cmath>
 
 ShotgunWeapon::ShotgunWeapon(const std::string& bulletTexturePath, int bulletWidth, int bulletHeight, float spreadAngle, int bulletsToFire)
     : bulletTexturePath(bulletTexturePath),
@@ -18,7 +17,7 @@ void ShotgunWeapon::Fire(Shooter& shooter)
     float angleIncrement = spreadAngle / (bulletsToFire - 1);
 
     for (int i = 0; i < bulletsToFire; ++i) {
-        float offsetAngle = shooterAngle - (spreadAngle / 2.0f) + i * angleIncrement;
+        float offsetAngle = shooterAngle - spreadAngle / 2.0f + i * angleIncrement;
         float radians = offsetAngle * M_PI / 180.0f;
 
         float dx = speed * std::sin(radians);

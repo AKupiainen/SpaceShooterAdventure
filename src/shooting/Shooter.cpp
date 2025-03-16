@@ -2,6 +2,8 @@
 #include "Bullet.h"
 #include "../core/Time.h"
 #include <iostream>
+#include "../core/DependencyInjection.h"
+#include "../core/CollisionManager.h"
 
 Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
     : renderer(renderer), playerX(x), playerY(y),
@@ -50,4 +52,6 @@ void Shooter::SetPosition(int x, int y) {
 
 void Shooter::AddBullet(Bullet* bullet) {
     bullets.push_back(bullet);
+    std::shared_ptr<CollisionManager> collisionManager = DependencyInjection::Resolve<CollisionManager>();
+    collisionManager->AddEntity(bullet);
 }

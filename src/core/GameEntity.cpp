@@ -29,10 +29,10 @@ void GameEntity::IncrementRotation(double angleIncrement) {
     }
 }
 
-void GameEntity::UpdateCollisionBox() {
-    collisionBox.SetPosition(static_cast<int>(posX), static_cast<int>(posY));
-}
-
 bool GameEntity::CheckCollision(const GameEntity& other) const {
     return collisionBox.CheckCollision(other.collisionBox);
+}
+
+void GameEntity::UpdateCollisionBox() {
+    collisionBox.SetPosition(static_cast<int>(posX), static_cast<int>(posY));
 }
