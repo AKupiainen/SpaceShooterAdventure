@@ -7,11 +7,8 @@
 
 class CollisionManager {
 public:
-    using CollisionCallback = void(*)(GameEntity& entity1, GameEntity& entity2);
-
     void AddEntity(GameEntity* entity);
     void RemoveEntity(const GameEntity* entity);
-    void RegisterCallback(CollisionCallback callback);
     void CheckCollisions() const;
     void DrawCollisionBoxes(SDL_Renderer* renderer) const;
 
@@ -21,11 +18,10 @@ public:
 
 private:
     std::vector<GameEntity*> entities;
-    CollisionCallback callback = nullptr;
 };
 
 inline void CollisionManager::RemoveEntity(const GameEntity* entity) {
-    if (auto it = std::find(entities.begin(), entities.end(), entity); it != entities.end()) {
+    if (const auto it = std::find(entities.begin(), entities.end(), entity); it != entities.end()) {
         entities.erase(it);
     }
 }

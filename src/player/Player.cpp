@@ -13,7 +13,7 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
 
     SetTag("Player");
 
-    weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f, 20);
+    weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f, 1000);
     shooter.SetWeapon(weapon.get());
 }
 

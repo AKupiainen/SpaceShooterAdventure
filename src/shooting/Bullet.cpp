@@ -2,6 +2,7 @@
 #include "BulletPath.h"
 #include <iostream>
 #include <SDL_render.h>
+#include "../helpers/DebugLog.h"
 
 Bullet::Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath)
     : GameEntity(renderer, texturePath, width, height, 100, 1, 1, x, y), path(path) {

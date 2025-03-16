@@ -44,6 +44,8 @@ set(SOURCE_FILES
         src/core/DependencyInjection.cpp
         src/helpers/DebugLog.cpp
         src/helpers/DebugLog.h
+        src/core/QuadTree.cpp
+        src/core/QuadTree.h
 )
 
 # Create the executable
