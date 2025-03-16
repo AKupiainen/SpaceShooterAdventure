@@ -34,4 +34,3 @@ void Bullet::Render(SDL_Renderer* renderer) {
         SDL_RenderCopyEx(renderer, GetTexture(), nullptr, &renderRect, rotationAngle, &center, SDL_FLIP_NONE);
     }
 }
-

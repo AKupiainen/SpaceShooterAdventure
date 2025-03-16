@@ -1,14 +1,18 @@
 #include "Player.h"
 #include "SDL2/SDL.h"
 #include <iostream>
-#include "../shooting/StraightBulletPath.h"
+#include "../shooting/StraightBulletWeapon.h"
 
+// In Player.cpp
 Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
                int frameDelay, int rows, int columns, int x, int y)
     : GameEntity(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns, x, y),
       engineFlame(renderer, "assets/sprites/ships/engine_flame.png", 240, 240, frameDelay, 4, 4),
       shooter(renderer, x, y),
       velocityX(0), velocityY(0), maxSpeedX(300), maxSpeedY(300), acceleration(5.0f), deceleration(4.0f) {
+
+    weapon = std::make_unique<StraightBulletWeapon>("assets/sprites/bullets/bullets/shot_3.png");
+    shooter.SetWeapon(weapon.get());
 }
 
 Player::~Player() {}
@@ -25,7 +29,6 @@ void Player::Update() {
     posX += velocityX;
     posY += velocityY;
 
-    // Keep the player inside the window bounds
     SDL_Window* window = SDL_GetWindowFromID(1);
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -35,14 +38,10 @@ void Player::Update() {
     if (posY < 0) posY = 0;
     if (posY + GetHeight() > windowHeight) posY = windowHeight - GetHeight();
 
-    // Update animator and engine flame
     animator->Update();
     engineFlame.Update();
 
-    // Shooting logic
-    StraightBulletPath* straightPath = new StraightBulletPath(10, 10);
     shooter.SetPosition(posX + GetWidth() * 0.5f, posY);
-    shooter.Shoot(straightPath, 10, 20, "assets/sprites/bullets/bullets/shot_3.png", 270);
     shooter.Update();
 }
 

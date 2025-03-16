@@ -1,18 +1,26 @@
 #include "StraightBulletWeapon.h"
-#include "StraightBulletPath.h"
+#include "Shooter.h"
 #include "Bullet.h"
+#include "StraightBulletPath.h"
 
-StraightBulletWeapon::StraightBulletWeapon(SDL_Renderer* renderer, const std::string& bulletTexturePath, float shootCooldown)
-    : bulletTexturePath(bulletTexturePath), bulletWidth(10), bulletHeight(20), shootCooldown(shootCooldown) {
+StraightBulletWeapon::StraightBulletWeapon(const std::string& bulletTexturePath, int bulletWidth, int bulletHeight)
+    : bulletTexturePath(bulletTexturePath), bulletWidth(bulletWidth), bulletHeight(bulletHeight) {
 }
 
-void StraightBulletWeapon::Shoot(Shooter& shooter)
+void StraightBulletWeapon::Fire(Shooter& shooter)
 {
-    // Ensure the shooter is allowed to shoot based on the cooldown
-    if (shooter.GetTimeSinceLastShot() >= shootCooldown) {
-        // Create a new bullet path (straight)
-        BulletPath* path = new StraightBulletPath(bulletWidth, bulletHeight);
-        // Shoot the bullet using the shoot method in the Shooter class
-        shooter.Shoot(path, bulletWidth, bulletHeight, bulletTexturePath, 270.0);  // Angle 270 for downward movement
-    }
+    auto* path = new StraightBulletPath(0, -10);
+
+    auto* bullet = new Bullet(
+        shooter.GetRenderer(),
+        shooter.GetX(),
+        shooter.GetY(),
+        path,
+        bulletWidth,
+        bulletHeight,
+        bulletTexturePath
+    );
+
+    bullet->SetRotation(270.0);
+    shooter.AddBullet(bullet);
 }

@@ -1,35 +1,41 @@
-#include "Bullet.h"
+#pragma once
+
 #include <SDL2/SDL.h>
 #include <vector>
+#include "Weapon.h"
 
-class Shooter;
+class Bullet;
 class BulletPath;
-
-class Weapon {
-public:
-    virtual ~Weapon() = default;
-    virtual void Shoot(Shooter& shooter) = 0;
-};
+class Weapon;
 
 class Shooter {
 public:
-    Shooter(SDL_Renderer* renderer, int playerX, int playerY);
+    Shooter(SDL_Renderer* renderer, int x, int y);
     ~Shooter();
 
-    void Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const std::string& texturePath, double angle);
     void Update();
     void Render(SDL_Renderer* renderer) const;
-
     void SetPosition(int x, int y);
-    void SetWeapon(std::unique_ptr<Weapon> weapon);
 
-    float GetTimeSinceLastShot() const;
+    void SetWeapon(Weapon* weaponPtr) {
+        currentWeapon = weaponPtr;
+    }
+
+    float GetShootCooldown() const { return shootCooldown; }
+    void SetShootCooldown(float cooldown) { shootCooldown = cooldown; }
+
+    void AddBullet(Bullet* bullet);
+
+    int GetX() const { return playerX; }
+    int GetY() const { return playerY; }
+
+    SDL_Renderer* GetRenderer() const { return renderer; }
 
 private:
+    Weapon* currentWeapon;
     SDL_Renderer* renderer;
     int playerX, playerY;
     float shootCooldown;
     float timeSinceLastShot;
     std::vector<Bullet*> bullets;
-    std::unique_ptr<Weapon> currentWeapon;
 };

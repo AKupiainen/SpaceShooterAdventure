@@ -3,8 +3,9 @@
 #include "../core/Time.h"
 #include <iostream>
 
-Shooter::Shooter(SDL_Renderer* renderer, int playerX, int playerY)
-    : renderer(renderer), playerX(playerX), playerY(playerY), shootCooldown(0.5f), timeSinceLastShot(0.0f), currentWeapon(nullptr) {
+Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
+    : renderer(renderer), playerX(x), playerY(y),
+      shootCooldown(0.5f), timeSinceLastShot(0.0f), currentWeapon(nullptr) {
 }
 
 Shooter::~Shooter() {
@@ -14,17 +15,8 @@ Shooter::~Shooter() {
     bullets.clear();
 }
 
-void Shooter::Shoot(BulletPath* path, int bulletWidth, int bulletHeight, const std::string& texturePath, double angle) {
-    if (timeSinceLastShot >= shootCooldown) {
-        auto newBullet = new Bullet(renderer, playerX, playerY, path, bulletWidth, bulletHeight, texturePath);
-        newBullet->SetRotation(angle);
-        bullets.push_back(newBullet);
-
-        timeSinceLastShot = 0.0f;
-    }
-}
-
 void Shooter::Update() {
+
     for (auto it = bullets.begin(); it != bullets.end();) {
         Bullet* bullet = *it;
         bullet->Update();
@@ -39,8 +31,9 @@ void Shooter::Update() {
 
     timeSinceLastShot += Time::GetDeltaTime();
 
-    if (currentWeapon) {
-        currentWeapon->Shoot(*this);
+    if (currentWeapon && timeSinceLastShot >= shootCooldown) {
+        currentWeapon->Fire(*this);
+        timeSinceLastShot = 0.0f;
     }
 }
 
@@ -55,10 +48,6 @@ void Shooter::SetPosition(int x, int y) {
     playerY = y;
 }
 
-void Shooter::SetWeapon(std::unique_ptr<Weapon> weapon) {
-    currentWeapon = std::move(weapon);
-}
-
-float Shooter::GetTimeSinceLastShot() const {
-    return timeSinceLastShot;
+void Shooter::AddBullet(Bullet* bullet) {
+    bullets.push_back(bullet);
 }

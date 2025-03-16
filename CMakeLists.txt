@@ -35,6 +35,7 @@ set(SOURCE_FILES
         src/shooting/StraightBulletWeapon.h
         src/player/EngineFlame.cpp
         src/player/EngineFlame.h
+        src/shooting/Weapon.h
 )
 
 # Create the executable

@@ -13,7 +13,6 @@ public:
     void Update();
     void Render(SDL_Renderer* renderer);
 
-    // Check if the bullet is still active (in screen or not)
     bool IsActive() const { return active; }
 
 private:

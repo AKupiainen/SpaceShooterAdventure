@@ -3,6 +3,7 @@
 #include "../core/GameEntity.h"
 #include "EngineFlame.h"
 #include "../shooting/Shooter.h"
+#include "../shooting/Weapon.h"
 #include <SDL2/SDL.h>
 
 class Player : public GameEntity {
@@ -22,6 +23,7 @@ private:
 
     EngineFlame engineFlame;
     Shooter shooter;
+    std::unique_ptr<Weapon> weapon;
 
     float velocityX, velocityY;
     const float maxSpeedX, maxSpeedY;

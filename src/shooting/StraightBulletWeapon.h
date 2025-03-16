@@ -1,23 +1,19 @@
-#ifndef STRAIGHTBULLETWEAPON_H
-#define STRAIGHTBULLETWEAPON_H
+#pragma once
 
+#include "Weapon.h"
 #include <string>
-#include <SDL2/SDL.h>
 
-#include "Shooter.h"
+class Shooter;
 
 class StraightBulletWeapon : public Weapon {
 public:
-    StraightBulletWeapon(SDL_Renderer* renderer, const std::string& bulletTexturePath, float shootCooldown);
+    StraightBulletWeapon(const std::string& bulletTexturePath, int bulletWidth = 10, int bulletHeight = 20);
     ~StraightBulletWeapon() override = default;
 
-    void Shoot(Shooter& shooter) override;
+    void Fire(Shooter& shooter) override;
 
 private:
     std::string bulletTexturePath;
     int bulletWidth;
     int bulletHeight;
-    float shootCooldown;
 };
-
-#endif

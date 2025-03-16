@@ -44,7 +44,7 @@ void ParallaxLayer::Render(SDL_Renderer* renderer) const {
     int yOffset = static_cast<int>(scrollPosition);
 
     SDL_Rect destRect1 = { 0, -yOffset, textureWidth, textureHeight };
-    SDL_RenderCopy(renderer, texture, NULL, &destRect1);
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect1);
 
     SDL_Rect destRect2 = { 0, textureHeight - yOffset, textureWidth, textureHeight };
     SDL_RenderCopy(renderer, texture, nullptr, &destRect2);
