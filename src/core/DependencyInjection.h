@@ -32,7 +32,6 @@ public:
     static void RegisterSingleton(std::shared_ptr<T> instance) {
         const auto typeIndex = std::type_index(typeid(T));
 
-
         factories[typeIndex] = [instance](void) -> std::shared_ptr<void> {
             return instance;
         };
@@ -64,4 +63,3 @@ private:
     static std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> factories;
     static std::unordered_map<std::type_index, std::shared_ptr<void>> instances;
 };
-
