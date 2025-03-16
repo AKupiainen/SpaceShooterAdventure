@@ -13,7 +13,7 @@ public:
     void Update();
     void Render(SDL_Renderer* renderer, float x, float y, float angle);
 
-    SpriteAnimator GetAnimator();
+    SpriteAnimator& GetAnimator();
 
 private:
     SpriteAnimator animator;
