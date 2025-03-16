@@ -4,14 +4,71 @@
 #include "core/Time.h"
 #include "player/Player.h"
 #include "sprites/ParallaxLayer.h"
+#include "core/CollisionManager.h"
 
+ParallaxLayer* layer1 = nullptr;
+ParallaxLayer* layer2 = nullptr;
+Player* player = nullptr;
+Bullet* bullet = nullptr;
+CollisionManager* collisionManager = nullptr;
 
-void FixedUpdate(Player& player) {
-    player.Update();
+bool Initialize(SDL_Renderer* renderer) {
+
+    Time::Init();
+    Time::SetTargetFrameRate(60.0f);
+    Time::SetFixedDeltaTime(1.0f / 60.0f);
+
+    std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
+
+    layer1 = new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer1.png").c_str(), -20.0f);
+    layer2 = new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer2.png").c_str(), -30.0f);
+
+    player = new Player(renderer, (basePath + "assets/sprites/ships/player_ship.png").c_str(), 148, 188, 10, 5, 5, 100, 100);
+    player->IncrementRotation(180);
+
+    collisionManager = new CollisionManager();
+    collisionManager->AddEntity(player);
+
+    return true;
+}
+
+void FixedUpdate() {
+    player->Update();
+    collisionManager->CheckCollisions();
+}
+
+void Render(SDL_Renderer* renderer) {
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 32, 255);
+    SDL_RenderClear(renderer);
+
+    layer1->Render(renderer);
+    layer2->Render(renderer);
+
+    player->Render(renderer);
+
+    SDL_RenderPresent(renderer);
+}
+
+void Update(SDL_Renderer* renderer) {
+
+    Time::Update();
+
+    static float accumulator = 0.0f;
+    accumulator += Time::GetDeltaTime();
+
+    while (accumulator >= Time::GetFixedDeltaTime()) {
+        FixedUpdate();
+        accumulator -= Time::GetFixedDeltaTime();
+    }
+
+    layer1->Update(Time::GetDeltaTime());
+    layer2->Update(Time::GetDeltaTime());
+
+    Render(renderer);
 }
 
 int main(int argc, char* argv[]) {
-
     const int SCREEN_WIDTH = 1920;
     const int SCREEN_HEIGHT = 1080;
 
@@ -43,20 +100,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
-
-    ParallaxLayer layer1(renderer, (basePath + "assets/sprites/parallax/layer1.png").c_str(), -20.0f);
-    ParallaxLayer layer2(renderer, (basePath + "assets/sprites/parallax/layer2.png").c_str(), -30.0f);
-
-    Player player(renderer, (basePath + "assets/sprites/ships/player_ship.png").c_str(), 148, 188, 10, 5, 5, 100, 100);
-    player.IncrementRotation(180);
+    if (!Initialize(renderer)) {
+        std::cerr << "Initialization failed!" << std::endl;
+        return 1;
+    }
 
     bool running = true;
     SDL_Event e;
-    Time::Init();
-    Time::SetTargetFrameRate(60.0f);
-    Time::SetFixedDeltaTime(1.0f / 60.0f);
-    float accumulator = 0.0f;
 
     while (running) {
         while (SDL_PollEvent(&e)) {
@@ -65,28 +115,14 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        Time::Update();
-        accumulator += Time::GetDeltaTime();
-
-        while (accumulator >= Time::GetFixedDeltaTime()) {
-            FixedUpdate(player);
-            accumulator -= Time::GetFixedDeltaTime();
-        }
-
-        layer1.Update(Time::GetDeltaTime());
-        layer2.Update(Time::GetDeltaTime());
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 32, 255);
-        SDL_RenderClear(renderer);
-
-        layer1.Render(renderer);
-        layer2.Render(renderer);
-
-        player.Render(renderer);
-
-        SDL_RenderPresent(renderer);
+        Update(renderer);
         Time::LimitFrameRate();
     }
+
+    delete layer1;
+    delete layer2;
+    delete player;
+    delete collisionManager;
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
