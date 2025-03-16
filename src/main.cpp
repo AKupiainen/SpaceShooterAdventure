@@ -11,15 +11,12 @@ ParallaxLayer* layer1 = nullptr;
 ParallaxLayer* layer2 = nullptr;
 Player* player = nullptr;
 Bullet* bullet = nullptr;
-CollisionManager* collisionManager = nullptr;
+std::shared_ptr<CollisionManager> collisionManager = nullptr;
 
 bool Initialize(SDL_Renderer* renderer) {
 
-    collisionManager = new CollisionManager();
-
-    DependencyInjection::RegisterSingleton<CollisionManager>(
-          []() { return std::make_shared<CollisionManager>(); }
-      );
+    collisionManager = std::make_shared<CollisionManager>();
+    DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
 
     Time::Init();
     Time::SetTargetFrameRate(60.0f);
@@ -127,7 +124,6 @@ int main(int argc, char* argv[]) {
     delete layer1;
     delete layer2;
     delete player;
-    delete collisionManager;
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

@@ -44,7 +44,6 @@ void Player::Update() {
     engineFlame.Update();
 
     shooter.SetPosition(posX + GetWidth() * 0.5f, posY);
-    shooter.SetRotation(0.0f);
     shooter.Update();
 }
 
