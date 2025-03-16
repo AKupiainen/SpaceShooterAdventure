@@ -11,7 +11,7 @@ public:
     ~SpriteAnimator();
 
     void Update();
-    void Render(SDL_Renderer* renderer, int x, int y, double angle);
+    void Render(SDL_Renderer* renderer, int x, int y, double angle) const;
 
     SDL_Rect GetCurrentFrameRect() const;
     SDL_Texture* GetTexture() const;

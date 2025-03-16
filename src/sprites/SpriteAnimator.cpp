@@ -58,7 +58,7 @@ SDL_Rect SpriteAnimator::GetCurrentFrameRect() const {
     return frameRect;
 }
 
-void SpriteAnimator::Render(SDL_Renderer* renderer, int x, int y, double angle) {
+void SpriteAnimator::Render(SDL_Renderer* renderer, int x, int y, double angle) const {
     SDL_Rect sourceRect = GetCurrentFrameRect();
 
     int newWidth = frameWidth;
