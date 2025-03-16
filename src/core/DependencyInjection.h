@@ -10,7 +10,8 @@ class DependencyInjection {
 public:
     template <typename T>
     static void Register(std::function<std::shared_ptr<T>()> factory, bool singleton = false) {
-        auto typeIndex = std::type_index(typeid(T));
+
+        const auto typeIndex = std::type_index(typeid(T));
 
         if (singleton) {
 
@@ -29,7 +30,7 @@ public:
 
     template <typename T>
     static void RegisterSingleton(std::shared_ptr<T> instance) {
-        auto typeIndex = std::type_index(typeid(T));
+        const auto typeIndex = std::type_index(typeid(T));
 
 
         factories[typeIndex] = [instance](void) -> std::shared_ptr<void> {
@@ -41,15 +42,15 @@ public:
     template <typename T>
     static std::shared_ptr<T> Resolve() {
 
-        auto typeIndex = std::type_index(typeid(T));
-        auto instanceIt = instances.find(typeIndex);
+        const auto typeIndex = std::type_index(typeid(T));
+        const auto instanceIt = instances.find(typeIndex);
 
         if (instanceIt != instances.end()) {
 
             return std::static_pointer_cast<T>(instanceIt->second);
         }
 
-        auto factoryIt = factories.find(typeIndex);
+        const auto factoryIt = factories.find(typeIndex);
 
         if (factoryIt != factories.end()) {
             return std::static_pointer_cast<T>(factoryIt->second());
