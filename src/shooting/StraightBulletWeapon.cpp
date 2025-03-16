@@ -5,8 +5,6 @@
 #include "Bullet.h"
 #include "StraightBulletPath.h"
 
-class CollisionManager;
-
 StraightBulletWeapon::StraightBulletWeapon(const std::string& bulletTexturePath, int bulletWidth, int bulletHeight)
     : bulletTexturePath(bulletTexturePath), bulletWidth(bulletWidth), bulletHeight(bulletHeight) {
 }

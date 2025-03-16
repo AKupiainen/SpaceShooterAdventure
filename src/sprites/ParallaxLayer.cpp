@@ -1,5 +1,4 @@
 #include "ParallaxLayer.h"
-
 #include <iostream>
 #include <ostream>
 #include <SDL2/SDL_image.h>

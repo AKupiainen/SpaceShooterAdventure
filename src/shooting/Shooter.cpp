@@ -6,11 +6,11 @@
 #include "../core/CollisionManager.h"
 
 Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
-    : renderer(renderer), playerX(x), playerY(y),
-      shootCooldown(0.5f), timeSinceLastShot(0.0f), currentWeapon(nullptr) {
+    : currentWeapon(nullptr), renderer(renderer), playerX(x),
+      playerY(y), shootCooldown(0.5f), timeSinceLastShot(0.0f) {
 
-    // Resolve CollisionManager once at creation
     collisionManager = DependencyInjection::Resolve<CollisionManager>();
+
     if (!collisionManager) {
         std::cerr << "Failed to resolve CollisionManager during Shooter initialization!" << std::endl;
     }

@@ -24,6 +24,7 @@ class GameEntity {
 public:
     GameEntity(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth,
                int frameHeight, int frameDelay, int rows, int columns, int x, int y);
+
     virtual ~GameEntity();
 
     virtual void Update() = 0;
@@ -44,6 +45,10 @@ public:
 
     CollisionBox& GetCollisionBox() { return collisionBox; }
 
+    void SetTag(const std::string& newTag) { tag = newTag; }
+    const std::string& GetTag() const { return tag; }
+
+    // Virtual function for collision handling
     virtual void OnCollisionEnter(GameEntity& other);
 
 protected:
@@ -56,6 +61,8 @@ protected:
 
     SpriteAnimator* animator;
     CollisionBox collisionBox;
+
+    std::string tag;
 };
 
 #endif

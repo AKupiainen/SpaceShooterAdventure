@@ -43,6 +43,5 @@ private:
     float timeSinceLastShot;
     float rotation;
     std::vector<Bullet*> bullets;
-
     std::shared_ptr<CollisionManager> collisionManager;
 };

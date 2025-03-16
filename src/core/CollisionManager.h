@@ -25,8 +25,7 @@ private:
 };
 
 inline void CollisionManager::RemoveEntity(const GameEntity* entity) {
-    auto it = std::find(entities.begin(), entities.end(), entity);
-    if (it != entities.end()) {
+    if (auto it = std::find(entities.begin(), entities.end(), entity); it != entities.end()) {
         entities.erase(it);
     }
 }
