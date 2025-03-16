@@ -15,6 +15,12 @@ CollisionManager* collisionManager = nullptr;
 
 bool Initialize(SDL_Renderer* renderer) {
 
+    collisionManager = new CollisionManager();
+
+    DependencyInjection::RegisterSingleton<CollisionManager>(
+          []() { return std::make_shared<CollisionManager>(); }
+      );
+
     Time::Init();
     Time::SetTargetFrameRate(60.0f);
     Time::SetFixedDeltaTime(1.0f / 60.0f);
@@ -27,11 +33,7 @@ bool Initialize(SDL_Renderer* renderer) {
     player = new Player(renderer, (basePath + "assets/sprites/ships/player_ship.png").c_str(), 148, 188, 10, 5, 5, 100, 100);
     player->IncrementRotation(180);
 
-    collisionManager = new CollisionManager();
     collisionManager->AddEntity(player);
-
-    DependencyInjection::RegisterSingleton<CollisionManager>(
-    []() { return std::make_shared<CollisionManager>(); });
 
     return true;
 }

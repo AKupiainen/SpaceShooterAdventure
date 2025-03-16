@@ -8,23 +8,35 @@
 Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
     : renderer(renderer), playerX(x), playerY(y),
       shootCooldown(0.5f), timeSinceLastShot(0.0f), currentWeapon(nullptr) {
+
+    // Resolve CollisionManager once at creation
+    collisionManager = DependencyInjection::Resolve<CollisionManager>();
+    if (!collisionManager) {
+        std::cerr << "Failed to resolve CollisionManager during Shooter initialization!" << std::endl;
+    }
 }
 
 Shooter::~Shooter() {
     for (Bullet* bullet : bullets) {
+
+        if (collisionManager) {
+            collisionManager->RemoveEntity(bullet);
+        }
         delete bullet;
     }
     bullets.clear();
 }
 
 void Shooter::Update() {
-
     for (auto it = bullets.begin(); it != bullets.end();) {
         Bullet* bullet = *it;
         bullet->Update();
 
         if (!bullet->IsActive()) {
 
+            if (collisionManager) {
+                collisionManager->RemoveEntity(bullet);
+            }
             delete bullet;
             it = bullets.erase(it);
         } else {
@@ -54,14 +66,9 @@ void Shooter::SetPosition(int x, int y) {
 void Shooter::AddBullet(Bullet* bullet) {
     bullets.push_back(bullet);
 
-    // Resolve CollisionManager
-    const std::shared_ptr<CollisionManager> collisionManager = DependencyInjection::Resolve<CollisionManager>();
-
-    // Check if the collisionManager is valid
     if (collisionManager) {
-        std::cout << "CollisionManager successfully resolved!" << std::endl;
         collisionManager->AddEntity(bullet);
     } else {
-        std::cout << "Failed to resolve CollisionManager!" << std::endl;
+        std::cerr << "Cannot add bullet to CollisionManager: manager is null!" << std::endl;
     }
 }

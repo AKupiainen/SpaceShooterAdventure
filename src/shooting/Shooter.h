@@ -7,6 +7,7 @@
 class Bullet;
 class BulletPath;
 class Weapon;
+class CollisionManager;
 
 class Shooter {
 public:
@@ -42,4 +43,6 @@ private:
     float timeSinceLastShot;
     float rotation;
     std::vector<Bullet*> bullets;
+
+    std::shared_ptr<CollisionManager> collisionManager;
 };
