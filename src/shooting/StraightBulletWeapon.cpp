@@ -1,4 +1,6 @@
 #include "StraightBulletWeapon.h"
+
+#include <iostream>
 #include "Shooter.h"
 #include "Bullet.h"
 #include "StraightBulletPath.h"
@@ -9,7 +11,15 @@ StraightBulletWeapon::StraightBulletWeapon(const std::string& bulletTexturePath,
 
 void StraightBulletWeapon::Fire(Shooter& shooter)
 {
-    auto* path = new StraightBulletPath(0, -10);
+    float speed = 300.0f;
+
+    float shooterAngle = shooter.GetRotation();
+    float radians = shooterAngle * M_PI / 180.0f;
+
+    float dx = speed * std::sin(radians);
+    float dy = -speed * std::cos(radians);
+
+    auto* path = new StraightBulletPath(dx, dy);
 
     auto* bullet = new Bullet(
         shooter.GetRenderer(),
@@ -21,6 +31,6 @@ void StraightBulletWeapon::Fire(Shooter& shooter)
         bulletTexturePath
     );
 
-    bullet->SetRotation(270.0);
+    bullet->SetRotation(shooterAngle);
     shooter.AddBullet(bullet);
 }

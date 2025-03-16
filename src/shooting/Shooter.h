@@ -31,11 +31,15 @@ public:
 
     SDL_Renderer* GetRenderer() const { return renderer; }
 
+    float GetRotation() const { return rotation; }
+    void SetRotation(float angle) { rotation = angle; }
+
 private:
     Weapon* currentWeapon;
     SDL_Renderer* renderer;
     int playerX, playerY;
     float shootCooldown;
     float timeSinceLastShot;
+    float rotation;
     std::vector<Bullet*> bullets;
 };

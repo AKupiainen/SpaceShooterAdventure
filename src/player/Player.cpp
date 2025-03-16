@@ -1,9 +1,9 @@
 #include "Player.h"
 #include "SDL2/SDL.h"
 #include <iostream>
-#include "../shooting/StraightBulletWeapon.h"
 
-// In Player.cpp
+#include "../shooting/ShotgunWeapon.h"
+
 Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
                int frameDelay, int rows, int columns, int x, int y)
     : GameEntity(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns, x, y),
@@ -11,9 +11,13 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
       shooter(renderer, x, y),
       velocityX(0), velocityY(0), maxSpeedX(300), maxSpeedY(300), acceleration(5.0f), deceleration(4.0f) {
 
-    weapon = std::make_unique<StraightBulletWeapon>("assets/sprites/bullets/bullets/shot_3.png");
+    // Change the default weapon to ShotgunWeapon
+    weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f, 20);
+
+    // Set the weapon for the shooter
     shooter.SetWeapon(weapon.get());
 }
+
 
 Player::~Player() {}
 
@@ -42,6 +46,7 @@ void Player::Update() {
     engineFlame.Update();
 
     shooter.SetPosition(posX + GetWidth() * 0.5f, posY);
+    shooter.SetRotation(0.0f);
     shooter.Update();
 }
 
