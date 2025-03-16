@@ -11,7 +11,7 @@ public:
     ~EngineFlame();
 
     void Update();
-    void Render(SDL_Renderer* renderer, float x, float y, float angle);  // Removed const
+    void Render(SDL_Renderer* renderer, float x, float y, float angle);
 
     SpriteAnimator GetAnimator();
 
