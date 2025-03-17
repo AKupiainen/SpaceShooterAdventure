@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GameEntity.h"
+#include <SDL2/SDL.h>
 
 class QuadTree {
 public:
@@ -16,6 +17,7 @@ public:
 
     void Insert(GameEntity* entity);
     void Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntity* entity);
+    void Draw(SDL_Renderer* renderer) const;
 
 private:
     int level;

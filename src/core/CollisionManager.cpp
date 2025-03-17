@@ -40,4 +40,16 @@ void CollisionManager::DrawCollisionBoxes(SDL_Renderer* renderer) const {
         SDL_Rect rect = box.GetRect();
         SDL_RenderDrawRect(renderer, &rect);
     }
+
+    int screenWidth = 1920;
+    int screenHeight = 1080;
+    CollisionBox worldBounds(0, 0, screenWidth, screenHeight);
+    QuadTree quadTree(0, worldBounds);
+
+    for (auto& entity : entities) {
+        quadTree.Insert(entity);
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    quadTree.Draw(renderer);
 }

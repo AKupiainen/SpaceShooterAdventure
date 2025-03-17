@@ -1,25 +1,27 @@
 #include "QuadTree.h"
 
 QuadTree::QuadTree(int level, const CollisionBox& bounds)
-    : level(level), bounds(bounds) {}
+    : level(level), bounds(bounds) {
+    entities.reserve(4);
+}
 
 QuadTree::~QuadTree() {
     DeleteNodes();
 }
 
 QuadTree::QuadTree(QuadTree&& other) noexcept
-    : level(other.level), bounds(other.bounds), entities(std::move(other.entities)), nodes(std::move(other.nodes)) {
-    other.level = 0;
+    : level(other.level), bounds(std::move(other.bounds)),
+      entities(std::move(other.entities)), nodes(std::move(other.nodes)) {
+    other.nodes.clear();
 }
 
 QuadTree& QuadTree::operator=(QuadTree&& other) noexcept {
     if (this != &other) {
-        DeleteNodes();
         level = other.level;
-        bounds = other.bounds;
+        bounds = std::move(other.bounds);
         entities = std::move(other.entities);
         nodes = std::move(other.nodes);
-        other.level = 0;
+        other.nodes.clear();
     }
     return *this;
 }
@@ -39,7 +41,9 @@ void QuadTree::Insert(GameEntity* entity) {
     }
 
     for (auto& node : nodes) {
-        node->Insert(entity);
+        if (node->IsEntityWithinBounds(entity)) {
+            node->Insert(entity);
+        }
     }
 }
 
@@ -48,15 +52,17 @@ void QuadTree::Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntit
         return;
     }
 
-    SDL_Rect entityRect = entity->GetCollisionBox().GetRect();
-    for (auto& node : nodes) {
-        SDL_Rect nodeRect = node->bounds.GetRect();
-        if (SDL_HasIntersection(&entityRect, &nodeRect)) {
-            node->Retrieve(potentialCollisions, entity);
+    potentialCollisions.insert(potentialCollisions.end(), entities.begin(), entities.end());
+
+    if (!nodes.empty()) {
+        SDL_Rect entityRect = entity->GetCollisionBox().GetRect();
+        for (auto& node : nodes) {
+            SDL_Rect nodeRect = node->bounds.GetRect();
+            if (SDL_HasIntersection(&entityRect, &nodeRect)) {
+                node->Retrieve(potentialCollisions, entity);
+            }
         }
     }
-
-    potentialCollisions.insert(potentialCollisions.end(), entities.begin(), entities.end());
 }
 
 bool QuadTree::IsEntityWithinBounds(GameEntity* entity) const {
@@ -71,6 +77,9 @@ void QuadTree::Subdivide() {
     int x = bounds.GetRect().x;
     int y = bounds.GetRect().y;
 
+    if (subWidth < 10 || subHeight < 10) return;
+
+    nodes.reserve(4);
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x, y, subWidth, subHeight)));
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x + subWidth, y, subWidth, subHeight)));
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x, y + subHeight, subWidth, subHeight)));
@@ -82,4 +91,15 @@ void QuadTree::DeleteNodes() {
         delete node;
     }
     nodes.clear();
+}
+
+void QuadTree::Draw(SDL_Renderer* renderer) const {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+    SDL_Rect rect = bounds.GetRect();
+    SDL_RenderDrawRect(renderer, &rect);
+
+    for (const auto& node : nodes) {
+        node->Draw(renderer);
+    }
 }
