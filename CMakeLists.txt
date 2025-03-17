@@ -46,6 +46,8 @@ set(SOURCE_FILES
         src/helpers/DebugLog.h
         src/core/QuadTree.cpp
         src/core/QuadTree.h
+        src/core/GameSettings.cpp
+        src/core/GameSettings.h
 )
 
 # Create the executable

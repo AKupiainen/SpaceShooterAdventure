@@ -2,13 +2,9 @@
 #include "QuadTree.h"
 #include <SDL2/SDL.h>
 
-void CollisionManager::AddEntity(GameEntity* entity) {
-    if (std::find(entities.begin(), entities.end(), entity) == entities.end()) {
-        entities.push_back(entity);
-    }
-}
 
 void CollisionManager::CheckCollisions() const {
+
     int screenWidth = 1920;
     int screenHeight = 1080;
 
