@@ -50,6 +50,10 @@ set(SOURCE_FILES
         src/core/GameSettings.h
         src/helpers/INIReader.cpp
         src/helpers/INIReader.h
+        src/enemy/Enemy.cpp
+        src/enemy/Enemy.h
+        src/helpers/Tags.cpp
+        src/helpers/Tags.h
 )
 
 # Create the executable

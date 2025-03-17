@@ -1,9 +1,7 @@
 #include "EngineFlame.h"
-#include <iostream>
 
-EngineFlame::EngineFlame(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
-                         int frameDelay, int rows, int columns)
-    : animator(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns) {
+EngineFlame::EngineFlame(SDL_Renderer* renderer)
+    : animator(renderer, "assets/sprites/ships/engine_flame.png", 240, 240, 100, 4, 4) {
 }
 
 EngineFlame::~EngineFlame() = default;

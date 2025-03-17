@@ -6,8 +6,7 @@
 
 class EngineFlame {
 public:
-    EngineFlame(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
-                int frameDelay, int rows, int columns);
+    EngineFlame(SDL_Renderer* renderer);
     ~EngineFlame();
 
     void Update();
