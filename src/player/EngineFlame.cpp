@@ -12,7 +12,7 @@ void EngineFlame::Update() {
     animator.Update();
 }
 
-void EngineFlame::Render(SDL_Renderer* renderer, float x, float y, float angle) const {
+void EngineFlame::Render(float x, float y, float angle) const {
     animator.Render(static_cast<int>(x), static_cast<int>(y), angle);
 }
 

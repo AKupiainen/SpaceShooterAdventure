@@ -37,5 +37,4 @@ void GameEntity::UpdateCollisionBox() {
     collisionBox.SetPosition(static_cast<int>(posX), static_cast<int>(posY));
 }
 
-
 void GameEntity::OnCollisionEnter(GameEntity& other) { }

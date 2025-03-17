@@ -28,15 +28,13 @@ ParallaxLayer::~ParallaxLayer() {
     if (texture) SDL_DestroyTexture(texture);
 }
 
-void ParallaxLayer::Update(float deltaTime) {
+void ParallaxLayer::Update(const float deltaTime) {
     if (!isLoaded) return;
 
-    // Adjust scrollPosition
     scrollPosition += speed * deltaTime;
 
     auto textureHeightF = static_cast<float>(textureHeight);
 
-    // Correctly wrap around the texture
     if (scrollPosition >= textureHeightF) {
         scrollPosition -= textureHeightF;
     }

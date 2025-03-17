@@ -55,7 +55,7 @@ void Player::Render(SDL_Renderer* renderer)  {
     int flameOffsetX = GetWidth() / 2 - engineFlame.GetAnimator().GetWidth() / 2;
     int flameOffsetY = GetHeight();
 
-    engineFlame.Render(renderer, GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 180.0f);
+    engineFlame.Render(GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 180.0f);
     shooter.Render(renderer);
 }
 
