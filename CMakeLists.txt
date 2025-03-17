@@ -48,6 +48,8 @@ set(SOURCE_FILES
         src/core/QuadTree.h
         src/core/GameSettings.cpp
         src/core/GameSettings.h
+        src/helpers/IniReader.cpp
+        src/helpers/IniReader.h
 )
 
 # Create the executable
