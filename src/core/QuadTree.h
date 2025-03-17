@@ -7,6 +7,12 @@
 class QuadTree {
 public:
     QuadTree(int level, const CollisionBox& bounds);
+    ~QuadTree();
+
+    QuadTree(const QuadTree& other) = delete;
+    QuadTree& operator=(const QuadTree& other) = delete;
+    QuadTree(QuadTree&& other) noexcept;
+    QuadTree& operator=(QuadTree&& other) noexcept;
 
     void Insert(GameEntity* entity);
     void Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntity* entity);
@@ -19,6 +25,7 @@ private:
 
     void Subdivide();
     bool IsEntityWithinBounds(GameEntity* entity) const;
+    void DeleteNodes();
 };
 
 #endif

@@ -3,8 +3,28 @@
 QuadTree::QuadTree(int level, const CollisionBox& bounds)
     : level(level), bounds(bounds) {}
 
-void QuadTree::Insert(GameEntity* entity) {
+QuadTree::~QuadTree() {
+    DeleteNodes();
+}
 
+QuadTree::QuadTree(QuadTree&& other) noexcept
+    : level(other.level), bounds(other.bounds), entities(std::move(other.entities)), nodes(std::move(other.nodes)) {
+    other.level = 0;
+}
+
+QuadTree& QuadTree::operator=(QuadTree&& other) noexcept {
+    if (this != &other) {
+        DeleteNodes();
+        level = other.level;
+        bounds = other.bounds;
+        entities = std::move(other.entities);
+        nodes = std::move(other.nodes);
+        other.level = 0;
+    }
+    return *this;
+}
+
+void QuadTree::Insert(GameEntity* entity) {
     if (!IsEntityWithinBounds(entity)) {
         return;
     }
@@ -24,7 +44,6 @@ void QuadTree::Insert(GameEntity* entity) {
 }
 
 void QuadTree::Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntity* entity) {
-
     if (!IsEntityWithinBounds(entity)) {
         return;
     }
@@ -41,14 +60,12 @@ void QuadTree::Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntit
 }
 
 bool QuadTree::IsEntityWithinBounds(GameEntity* entity) const {
-
     SDL_Rect entityRect = entity->GetCollisionBox().GetRect();
     SDL_Rect boundsRect = bounds.GetRect();
     return SDL_HasIntersection(&entityRect, &boundsRect);
 }
 
 void QuadTree::Subdivide() {
-
     int subWidth = bounds.GetRect().w / 2;
     int subHeight = bounds.GetRect().h / 2;
     int x = bounds.GetRect().x;
@@ -58,4 +75,11 @@ void QuadTree::Subdivide() {
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x + subWidth, y, subWidth, subHeight)));
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x, y + subHeight, subWidth, subHeight)));
     nodes.push_back(new QuadTree(level + 1, CollisionBox(x + subWidth, y + subHeight, subWidth, subHeight)));
+}
+
+void QuadTree::DeleteNodes() {
+    for (auto node : nodes) {
+        delete node;
+    }
+    nodes.clear();
 }
