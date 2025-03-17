@@ -19,8 +19,8 @@ bool Initialize(SDL_Renderer* renderer) {
     DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
 
     Time::Init();
-    Time::SetTargetFrameRate(200.0f);
-    Time::SetFixedDeltaTime(1.0f / 200.0f);
+    Time::SetTargetFrameRate(60.0f);
+    Time::SetFixedDeltaTime(1.0f / 60.0f);
 
     std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
 
