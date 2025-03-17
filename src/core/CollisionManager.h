@@ -1,7 +1,7 @@
 #ifndef COLLISIONMANAGER_H
 #define COLLISIONMANAGER_H
 
-#include <vector>
+#include <unordered_set>
 #include "GameEntity.h"
 #include <SDL2/SDL.h>
 
@@ -17,17 +17,21 @@ public:
     size_t GetEntityCount() const { return entities.size(); }
 
 private:
-    std::vector<GameEntity*> entities;
+    std::unordered_set<GameEntity*> entities;
 };
 
+inline void CollisionManager::AddEntity(GameEntity* entity) {
+    entities.insert(entity);
+}
+
 inline void CollisionManager::RemoveEntity(const GameEntity* entity) {
-    if (const auto it = std::find(entities.begin(), entities.end(), entity); it != entities.end()) {
+    if (auto it = entities.find(const_cast<GameEntity*>(entity)); it != entities.end()) {
         entities.erase(it);
     }
 }
 
 inline bool CollisionManager::Contains(const GameEntity* entity) const {
-    return std::find(entities.begin(), entities.end(), entity) != entities.end();
+    return entities.find(const_cast<GameEntity*>(entity)) != entities.end();
 }
 
 #endif
