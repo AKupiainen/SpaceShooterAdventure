@@ -15,19 +15,18 @@ Bullet* bullet = nullptr;
 std::shared_ptr<CollisionManager> collisionManager = nullptr;
 
 bool Initialize(SDL_Renderer* renderer) {
-    collisionManager = std::make_shared<CollisionManager>();
+
+    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
+    if (!settings->Load()) {
+        std::cerr << "Failed to load the game settings! Using defaults." << std::endl;
+    }
+
+    collisionManager = std::make_shared<CollisionManager>(settings);
     DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
 
     Time::Init();
     Time::SetTargetFrameRate(60.0f);
     Time::SetFixedDeltaTime(1.0f / 60.0f);
-
-    // Get the GameSettings instance and load the configuration
-    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
-    if (!settings->Load()) {
-        std::cerr << "Failed to load the game settings! Using defaults." << std::endl;
-        // Continue with defaults
-    }
 
     std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
 
@@ -39,7 +38,6 @@ bool Initialize(SDL_Renderer* renderer) {
 
     collisionManager->AddEntity(player);
 
-    // Apply window settings from the loaded configuration
     SDL_Window* window = SDL_GetWindowFromID(1);
     if (window) {
         SDL_SetWindowSize(window, settings->GetWindowWidth(), settings->GetWindowHeight());

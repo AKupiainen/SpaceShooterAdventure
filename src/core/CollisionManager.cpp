@@ -2,13 +2,16 @@
 #include "QuadTree.h"
 #include <SDL2/SDL.h>
 
+CollisionManager::CollisionManager(const std::shared_ptr<GameSettings> &settings)
+    : gameSettings(settings)
+{}
 
 void CollisionManager::CheckCollisions() const {
 
-    int screenWidth = 1920;
-    int screenHeight = 1080;
+    int screenWidth = gameSettings->GetWindowWidth();
+    int screenHeight = gameSettings->GetWindowHeight();
 
-    CollisionBox worldBounds(0, 0, screenWidth, screenHeight);
+    const CollisionBox worldBounds(0, 0, screenWidth, screenHeight);
     QuadTree quadTree(0, worldBounds);
 
     for (auto& entity : entities) {
@@ -29,6 +32,10 @@ void CollisionManager::CheckCollisions() const {
 }
 
 void CollisionManager::DrawCollisionBoxes(SDL_Renderer* renderer) const {
+
+    int screenWidth = gameSettings->GetWindowWidth();
+    int screenHeight = gameSettings->GetWindowHeight();
+
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     for (const auto& entity : entities) {
@@ -37,8 +44,6 @@ void CollisionManager::DrawCollisionBoxes(SDL_Renderer* renderer) const {
         SDL_RenderDrawRect(renderer, &rect);
     }
 
-    int screenWidth = 1920;
-    int screenHeight = 1080;
     CollisionBox worldBounds(0, 0, screenWidth, screenHeight);
     QuadTree quadTree(0, worldBounds);
 

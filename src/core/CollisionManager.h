@@ -4,9 +4,13 @@
 #include <unordered_set>
 #include "GameEntity.h"
 #include <SDL2/SDL.h>
+#include "GameSettings.h"
 
 class CollisionManager {
 public:
+
+    CollisionManager(const std::shared_ptr<GameSettings> &settings);
+
     void AddEntity(GameEntity* entity);
     void RemoveEntity(const GameEntity* entity);
     void CheckCollisions() const;
@@ -18,6 +22,7 @@ public:
 
 private:
     std::unordered_set<GameEntity*> entities;
+    std::shared_ptr<GameSettings> gameSettings;
 };
 
 inline void CollisionManager::AddEntity(GameEntity* entity) {
