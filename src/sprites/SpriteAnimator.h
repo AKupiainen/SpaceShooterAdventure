@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
+#include <unordered_map>
 
 class SpriteAnimator {
 public:
@@ -20,6 +21,8 @@ public:
     int GetHeight() const;
     int GetCurrentFrame() const;
 
+    static void ClearTextureCache();
+
 private:
     SDL_Texture* texture;
     int frameWidth;
@@ -31,6 +34,9 @@ private:
     int currentFrameIndex;
     Uint32 lastFrameTime;
     int currentFrameTime;
+
+    static std::unordered_map<std::string, SDL_Texture*> textureCache;
+    static SDL_Texture* LoadTexture(SDL_Renderer* renderer, const std::string& texturePath);
 };
 
 #endif
