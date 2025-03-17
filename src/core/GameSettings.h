@@ -12,13 +12,13 @@ class GameSettings {
     IniReader iniReader;
 
 public:
-    GameSettings(const std::string& iniFile);
+    explicit GameSettings(std::string  iniFile);
 
     bool Load();
 
-    int GetWindowWidth() const;
-    int GetWindowHeight() const;
-    bool IsFullscreen() const;
+    [[nodiscard]] int GetWindowWidth() const;
+    [[nodiscard]] int GetWindowHeight() const;
+    [[nodiscard]] bool IsFullscreen() const;
 };
 
 #endif

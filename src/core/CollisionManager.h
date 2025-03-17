@@ -9,7 +9,7 @@
 class CollisionManager {
 public:
 
-    CollisionManager(const std::shared_ptr<GameSettings> &settings);
+    explicit CollisionManager(const std::shared_ptr<GameSettings> &settings);
 
     void AddEntity(GameEntity* entity);
     void RemoveEntity(const GameEntity* entity);
@@ -18,7 +18,7 @@ public:
 
     bool Contains(const GameEntity* entity) const;
 
-    size_t GetEntityCount() const { return entities.size(); }
+    [[nodiscard]] size_t GetEntityCount() const { return entities.size(); }
 
 private:
     std::unordered_set<GameEntity*> entities;

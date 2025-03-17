@@ -48,23 +48,6 @@ bool Initialize(SDL_Renderer* renderer) {
     return true;
 }
 
-class MemoryLeakExample {
-public:
-    MemoryLeakExample() {
-        std::cout << "MemoryLeakExample created!" << std::endl;
-    }
-
-    ~MemoryLeakExample() {
-        std::cout << "MemoryLeakExample destroyed!" << std::endl;
-    }
-};
-
-void createMemoryLeak() {
-    // Dynamically allocate memory but never free it
-    MemoryLeakExample* leak = new MemoryLeakExample();
-    // Memory is not freed, causing a memory leak
-}
-
 void FixedUpdate() {
     player->Update();
     collisionManager->CheckCollisions();
@@ -103,7 +86,6 @@ void Update(SDL_Renderer* renderer) {
 
 int main(int argc, char* argv[]) {
 
-    createMemoryLeak();
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return 1;

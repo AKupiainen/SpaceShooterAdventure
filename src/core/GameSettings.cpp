@@ -1,8 +1,8 @@
 #include "GameSettings.h"
 #include <iostream>
 
-GameSettings::GameSettings(const std::string& iniFile)
-    : iniFile(iniFile), windowWidth(1920), windowHeight(1080), fullscreen(false) {}
+GameSettings::GameSettings(std::string  iniFile)
+    : iniFile(std::move(iniFile)), windowWidth(1920), windowHeight(1080), fullscreen(false) {}
 
 bool GameSettings::Load() {
     if (!iniReader.loadFile(iniFile)) {

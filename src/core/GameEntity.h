@@ -9,8 +9,8 @@ class CollisionBox {
 public:
     CollisionBox(int x, int y, int w, int h) : x(x), y(y), width(w), height(h) {}
     void SetPosition(int newX, int newY) { x = newX; y = newY; }
-    SDL_Rect GetRect() const { return { x, y, width, height }; }
-    bool CheckCollision(const CollisionBox& other) const {
+    [[nodiscard]] SDL_Rect GetRect() const { return { x, y, width, height }; }
+    [[nodiscard]] bool CheckCollision(const CollisionBox& other) const {
         SDL_Rect a = GetRect();
         SDL_Rect b = other.GetRect();
         return SDL_HasIntersection(&a, &b);
@@ -32,21 +32,21 @@ public:
 
     void IncrementRotation(double angleIncrement);
     void UpdateCollisionBox();
-    bool CheckCollision(const GameEntity& other) const;
+    [[nodiscard]] bool CheckCollision(const GameEntity& other) const;
 
-    int GetPosX() const { return static_cast<int>(posX); }
-    int GetPosY() const { return static_cast<int>(posY); }
-    int GetWidth() const { return width; }
-    int GetHeight() const { return height; }
+    [[nodiscard]] int GetPosX() const { return static_cast<int>(posX); }
+    [[nodiscard]] int GetPosY() const { return static_cast<int>(posY); }
+    [[nodiscard]] int GetWidth() const { return width; }
+    [[nodiscard]] int GetHeight() const { return height; }
 
-    SDL_Texture* GetTexture() const { return animator->GetTexture(); }
+    [[nodiscard]] SDL_Texture* GetTexture() const { return animator->GetTexture(); }
 
     void SetRotation(int angleIncrement) { rotationAngle = angleIncrement; }
 
     CollisionBox& GetCollisionBox() { return collisionBox; }
 
     void SetTag(const std::string& newTag) { tag = newTag; }
-    const std::string& GetTag() const { return tag; }
+    [[nodiscard]] const std::string& GetTag() const { return tag; }
 
     virtual void OnCollisionEnter(GameEntity& other);
 

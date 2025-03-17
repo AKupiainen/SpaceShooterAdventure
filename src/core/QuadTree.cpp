@@ -10,7 +10,7 @@ QuadTree::~QuadTree() {
 }
 
 QuadTree::QuadTree(QuadTree&& other) noexcept
-    : level(other.level), bounds(std::move(other.bounds)),
+    : level(other.level), bounds(other.bounds),
       entities(std::move(other.entities)), nodes(std::move(other.nodes)) {
     other.nodes.clear();
 }
@@ -18,7 +18,7 @@ QuadTree::QuadTree(QuadTree&& other) noexcept
 QuadTree& QuadTree::operator=(QuadTree&& other) noexcept {
     if (this != &other) {
         level = other.level;
-        bounds = std::move(other.bounds);
+        bounds = other.bounds;
         entities = std::move(other.entities);
         nodes = std::move(other.nodes);
         other.nodes.clear();

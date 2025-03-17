@@ -16,13 +16,13 @@ public:
         if (singleton) {
 
             std::shared_ptr<void> instance = factory();
-            factories[typeIndex] = [instance](void) -> std::shared_ptr<void> {
+            factories[typeIndex] = [instance]() -> std::shared_ptr<void> {
                 return instance;
             };
             instances[typeIndex] = instance;
         } else {
 
-            factories[typeIndex] = [factory](void) -> std::shared_ptr<void> {
+            factories[typeIndex] = [factory]() -> std::shared_ptr<void> {
                 return factory();
             };
         }
@@ -32,7 +32,7 @@ public:
     static void RegisterSingleton(std::shared_ptr<T> instance) {
         const auto typeIndex = std::type_index(typeid(T));
 
-        factories[typeIndex] = [instance](void) -> std::shared_ptr<void> {
+        factories[typeIndex] = [instance]() -> std::shared_ptr<void> {
             return instance;
         };
         instances[typeIndex] = instance;
