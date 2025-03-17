@@ -1,10 +1,11 @@
 #include "ShotgunWeapon.h"
+
 #include "Shooter.h"
 #include "Bullet.h"
 #include "StraightBulletPath.h"
 
-ShotgunWeapon::ShotgunWeapon(const std::string& bulletTexturePath, int bulletWidth, int bulletHeight, float spreadAngle, int bulletsToFire)
-    : bulletTexturePath(bulletTexturePath),
+ShotgunWeapon::ShotgunWeapon(std::string  bulletTexturePath, int bulletWidth, int bulletHeight, float spreadAngle, int bulletsToFire)
+    : bulletTexturePath(std::move(bulletTexturePath)),
       bulletWidth(bulletWidth),
       bulletHeight(bulletHeight),
       spreadAngle(spreadAngle),
@@ -12,16 +13,16 @@ ShotgunWeapon::ShotgunWeapon(const std::string& bulletTexturePath, int bulletWid
 
 void ShotgunWeapon::Fire(Shooter& shooter)
 {
-    float speed = 600.0f;
-    float shooterAngle = shooter.GetRotation();
-    float angleIncrement = spreadAngle / (bulletsToFire - 1);
+    double shooterAngle = shooter.GetRotation();
+    double angleIncrement = spreadAngle / static_cast<double>(bulletsToFire - 1);
 
     for (int i = 0; i < bulletsToFire; ++i) {
-        float offsetAngle = shooterAngle - spreadAngle / 2.0f + i * angleIncrement;
-        float radians = offsetAngle * M_PI / 180.0f;
+        double speed = 600.0f;
+        double offsetAngle = shooterAngle - spreadAngle / 2.0f + i * angleIncrement;
+        double radians = offsetAngle * M_PI / 180.0f;
 
-        float dx = speed * std::sin(radians);
-        float dy = -speed * std::cos(radians);
+        double dx = speed * std::sin(radians);
+        double dy = -speed * std::cos(radians);
 
         auto* path = new StraightBulletPath(dx, dy);
         auto* bullet = new Bullet(
@@ -34,7 +35,7 @@ void ShotgunWeapon::Fire(Shooter& shooter)
             bulletTexturePath
         );
 
-        bullet->SetRotation(offsetAngle);
+        bullet->SetRotation(static_cast<int>(offsetAngle));
         shooter.AddBullet(bullet);
     }
 }

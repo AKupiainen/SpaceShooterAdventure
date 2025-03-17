@@ -10,14 +10,14 @@ class Player : public GameEntity {
 public:
     Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int frameWidth, int frameHeight,
            int frameDelay, int rows, int columns, int x, int y);
-    ~Player();
+    ~Player() override;
 
     void Update() override;
     void Render(SDL_Renderer* renderer) override;
     void OnCollisionEnter(GameEntity& other) override;
 
 private:
-    void HandleMovement(const Uint8* keystate);
+    void HandleMovement(const Uint8* keyState);
     void HandleMouseMovement();
     void ClampVelocity();
     void ApplyDeceleration();

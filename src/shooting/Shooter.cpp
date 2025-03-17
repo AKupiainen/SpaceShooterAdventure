@@ -7,8 +7,7 @@
 
 Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
     : currentWeapon(nullptr), renderer(renderer), playerX(x),
-      playerY(y), shootCooldown(0.5f), timeSinceLastShot(0.0f) {
-
+      playerY(y), shootCooldown(0.5f), timeSinceLastShot(0.0f), rotation(0) {
     collisionManager = DependencyInjection::Resolve<CollisionManager>();
 
     if (!collisionManager) {

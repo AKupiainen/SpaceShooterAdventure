@@ -38,8 +38,7 @@ bool Initialize(SDL_Renderer* renderer) {
 
     collisionManager->AddEntity(player);
 
-    SDL_Window* window = SDL_GetWindowFromID(1);
-    if (window) {
+    if (SDL_Window* window = SDL_GetWindowFromID(1)) {
         SDL_SetWindowSize(window, settings->GetWindowWidth(), settings->GetWindowHeight());
         if (settings->IsFullscreen()) {
             SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -47,6 +46,23 @@ bool Initialize(SDL_Renderer* renderer) {
     }
 
     return true;
+}
+
+class MemoryLeakExample {
+public:
+    MemoryLeakExample() {
+        std::cout << "MemoryLeakExample created!" << std::endl;
+    }
+
+    ~MemoryLeakExample() {
+        std::cout << "MemoryLeakExample destroyed!" << std::endl;
+    }
+};
+
+void createMemoryLeak() {
+    // Dynamically allocate memory but never free it
+    MemoryLeakExample* leak = new MemoryLeakExample();
+    // Memory is not freed, causing a memory leak
 }
 
 void FixedUpdate() {
@@ -87,6 +103,7 @@ void Update(SDL_Renderer* renderer) {
 
 int main(int argc, char* argv[]) {
 
+    createMemoryLeak();
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -98,14 +115,12 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Register GameSettings singleton before creating the window
     std::string configPath = SDL_GetBasePath() ? std::string(SDL_GetBasePath()) + "config/config.ini" : "config/config.ini";
     std::shared_ptr<GameSettings> gameSettings = std::make_shared<GameSettings>(configPath);
     DependencyInjection::RegisterSingleton<GameSettings>(gameSettings);
 
-    // Try to load settings before creating the window
     std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
-    settings->Load(); // Even if this fails, we'll use defaults
+    settings->Load();
 
     int screenWidth = settings->GetWindowWidth();
     int screenHeight = settings->GetWindowHeight();
@@ -151,6 +166,7 @@ int main(int argc, char* argv[]) {
     delete layer1;
     delete layer2;
     delete player;
+    SpriteAnimator::ClearTextureCache();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

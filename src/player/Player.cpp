@@ -17,7 +17,7 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
     shooter.SetWeapon(weapon.get());
 }
 
-Player::~Player() {}
+Player::~Player() = default;
 
 void Player::Update() {
     const Uint8* keystate = SDL_GetKeyboardState(nullptr);
@@ -64,17 +64,17 @@ void Player::OnCollisionEnter(GameEntity &other)
 
 }
 
-void Player::HandleMovement(const Uint8* keystate) {
-    if (keystate[SDL_SCANCODE_W]) {
+void Player::HandleMovement(const Uint8* keyState) {
+    if (keyState[SDL_SCANCODE_W]) {
         velocityY -= acceleration;
     }
-    if (keystate[SDL_SCANCODE_S]) {
+    if (keyState[SDL_SCANCODE_S]) {
         velocityY += acceleration;
     }
-    if (keystate[SDL_SCANCODE_A]) {
+    if (keyState[SDL_SCANCODE_A]) {
         velocityX -= acceleration;
     }
-    if (keystate[SDL_SCANCODE_D]) {
+    if (keyState[SDL_SCANCODE_D]) {
         velocityX += acceleration;
     }
 }

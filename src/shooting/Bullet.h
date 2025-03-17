@@ -8,13 +8,13 @@
 class Bullet : public GameEntity {
 public:
     Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath);
-    ~Bullet();
+    ~Bullet() override;
 
     void Update() override;
     void Render(SDL_Renderer* renderer) override;
     void OnCollisionEnter(GameEntity &other) override;
 
-    bool IsActive() const { return active; }
+    [[nodiscard]] bool IsActive() const { return active; }
 
 private:
     BulletPath* path;

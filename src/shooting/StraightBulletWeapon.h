@@ -7,7 +7,7 @@ class Shooter;
 
 class StraightBulletWeapon : public Weapon {
 public:
-    StraightBulletWeapon(const std::string& bulletTexturePath, int bulletWidth = 10, int bulletHeight = 20);
+    explicit StraightBulletWeapon(std::string  bulletTexturePath, int bulletWidth = 10, int bulletHeight = 20);
     ~StraightBulletWeapon() override = default;
 
     void Fire(Shooter& shooter) override;

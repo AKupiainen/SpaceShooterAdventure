@@ -6,14 +6,14 @@ EngineFlame::EngineFlame(SDL_Renderer* renderer, const std::string& spriteSheetP
     : animator(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns) {
 }
 
-EngineFlame::~EngineFlame() {}
+EngineFlame::~EngineFlame() = default;
 
 void EngineFlame::Update() {
     animator.Update();
 }
 
 void EngineFlame::Render(SDL_Renderer* renderer, float x, float y, float angle) const {
-    animator.Render(renderer, static_cast<int>(x), static_cast<int>(y), angle);
+    animator.Render(static_cast<int>(x), static_cast<int>(y), angle);
 }
 
 SpriteAnimator& EngineFlame::GetAnimator() {

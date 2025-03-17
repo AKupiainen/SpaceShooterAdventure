@@ -12,18 +12,19 @@ public:
     ~SpriteAnimator();
 
     void Update();
-    void Render(SDL_Renderer* renderer, int x, int y, double angle) const;
+    void Render(int x, int y, double angle) const;
 
-    SDL_Rect GetCurrentFrameRect() const;
-    SDL_Texture* GetTexture() const;
+    [[nodiscard]] SDL_Rect GetCurrentFrameRect() const;
+    [[nodiscard]] SDL_Texture* GetTexture() const;
 
-    int GetWidth() const;
-    int GetHeight() const;
-    int GetCurrentFrame() const;
+    [[nodiscard]] int GetWidth() const;
+    [[nodiscard]] int GetHeight() const;
+    [[nodiscard]] int GetCurrentFrame() const;
 
     static void ClearTextureCache();
 
 private:
+    SDL_Renderer* renderer;
     SDL_Texture* texture;
     int frameWidth;
     int frameHeight;

@@ -15,7 +15,7 @@ GameEntity::~GameEntity() {
 }
 
 void GameEntity::Render(SDL_Renderer* renderer) {
-    animator->Render(renderer, static_cast<int>(posX), static_cast<int>(posY), rotationAngle);
+    animator->Render(static_cast<int>(posX), static_cast<int>(posY), rotationAngle);
 }
 
 void GameEntity::IncrementRotation(double angleIncrement) {

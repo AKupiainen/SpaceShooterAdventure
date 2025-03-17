@@ -11,7 +11,7 @@ bool IniReader::loadFile(const std::string& filename) {
     }
 
     data.clear();
-    std::string currentSection = "";
+    std::string currentSection;
 
     std::string line;
     while (std::getline(file, line)) {

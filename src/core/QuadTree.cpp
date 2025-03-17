@@ -47,7 +47,7 @@ void QuadTree::Insert(GameEntity* entity) {
     }
 }
 
-void QuadTree::Retrieve(std::vector<GameEntity*>& potentialCollisions, GameEntity* entity) {
+auto QuadTree::Retrieve(std::vector<GameEntity *> &potentialCollisions, GameEntity *entity) -> void {
     if (!IsEntityWithinBounds(entity)) {
         return;
     }
@@ -93,7 +93,7 @@ void QuadTree::DeleteNodes() {
     nodes.clear();
 }
 
-void QuadTree::Draw(SDL_Renderer* renderer) const {
+auto QuadTree::Draw(SDL_Renderer *renderer) const -> void {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     SDL_Rect rect = bounds.GetRect();

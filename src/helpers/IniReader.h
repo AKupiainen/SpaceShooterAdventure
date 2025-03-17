@@ -10,16 +10,16 @@ class IniReader {
 public:
     bool loadFile(const std::string& filename);
 
-    std::string getString(const std::string& section, const std::string& key,
+    [[nodiscard]] std::string getString(const std::string& section, const std::string& key,
                           const std::string& defaultValue = "") const;
 
-    int getInt(const std::string& section, const std::string& key,
+    [[nodiscard]] int getInt(const std::string& section, const std::string& key,
                int defaultValue = 0) const;
 
-    float getFloat(const std::string& section, const std::string& key,
+    [[nodiscard]] float getFloat(const std::string& section, const std::string& key,
                    float defaultValue = 0.0f) const;
 
-    bool getBool(const std::string& section, const std::string& key,
+    [[nodiscard]] bool getBool(const std::string& section, const std::string& key,
                  bool defaultValue = false) const;
 
 private:

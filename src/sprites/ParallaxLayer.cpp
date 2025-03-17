@@ -31,9 +31,18 @@ ParallaxLayer::~ParallaxLayer() {
 void ParallaxLayer::Update(float deltaTime) {
     if (!isLoaded) return;
 
+    // Adjust scrollPosition
     scrollPosition += speed * deltaTime;
-    if (scrollPosition >= textureHeight) scrollPosition -= textureHeight;
-    if (scrollPosition < 0) scrollPosition += textureHeight;
+
+    auto textureHeightF = static_cast<float>(textureHeight);
+
+    // Correctly wrap around the texture
+    if (scrollPosition >= textureHeightF) {
+        scrollPosition -= textureHeightF;
+    }
+    if (scrollPosition < 0.0f) {
+        scrollPosition += textureHeightF;
+    }
 }
 
 void ParallaxLayer::Render(SDL_Renderer* renderer) const {

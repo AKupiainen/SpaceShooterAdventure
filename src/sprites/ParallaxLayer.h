@@ -5,7 +5,7 @@
 class ParallaxLayer {
 
     SDL_Texture* texture;
-    int textureWidth, textureHeight;
+    int textureWidth{}, textureHeight{};
     float speed;
     float scrollPosition;
     bool isLoaded;
