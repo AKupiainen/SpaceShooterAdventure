@@ -57,7 +57,7 @@ void Shooter::Render(SDL_Renderer* renderer) const {
     }
 }
 
-void Shooter::SetPosition(int x, int y) {
+void Shooter::SetPosition(double x, double y) {
     playerX = x;
     playerY = y;
 }
