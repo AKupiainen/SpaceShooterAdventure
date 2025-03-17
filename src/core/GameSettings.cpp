@@ -1,23 +1,30 @@
 #include "GameSettings.h"
+#include <iostream>
 
-GameSettings::GameSettings(const std::string& filename) : reader(filename) {}
+GameSettings::GameSettings(const std::string& iniFile)
+    : iniFile(iniFile), windowWidth(1920), windowHeight(1080), fullscreen(false) {}
 
 bool GameSettings::Load() {
-    return reader.Load();
-}
+    if (!iniReader.loadFile(iniFile)) {
+        std::cerr << "Failed to load INI file: " << iniFile << std::endl;
+        return false;
+    }
 
-std::string GameSettings::GetTitle() const {
-    return reader.GetString("Game", "Title", "Default Title");
+    windowWidth = iniReader.getInt("Graphics", "ScreenWidth", 1920);
+    windowHeight = iniReader.getInt("Graphics", "ScreenHeight", 1080);
+    fullscreen = iniReader.getBool("Graphics", "Fullscreen", false);
+
+    return true;
 }
 
 int GameSettings::GetWindowWidth() const {
-    return reader.GetInteger("Graphics", "Width", 800);
+    return windowWidth;
 }
 
 int GameSettings::GetWindowHeight() const {
-    return reader.GetInteger("Graphics", "Height", 600);
+    return windowHeight;
 }
 
 bool GameSettings::IsFullscreen() const {
-    return reader.GetBoolean("Graphics", "Fullscreen", false);
+    return fullscreen;
 }

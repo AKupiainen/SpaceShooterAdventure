@@ -6,6 +6,7 @@
 #include "sprites/ParallaxLayer.h"
 #include "core/CollisionManager.h"
 #include "core/DependencyInjection.h"
+#include "core/GameSettings.h"
 
 ParallaxLayer* layer1 = nullptr;
 ParallaxLayer* layer2 = nullptr;
@@ -14,13 +15,19 @@ Bullet* bullet = nullptr;
 std::shared_ptr<CollisionManager> collisionManager = nullptr;
 
 bool Initialize(SDL_Renderer* renderer) {
-
     collisionManager = std::make_shared<CollisionManager>();
     DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
 
     Time::Init();
     Time::SetTargetFrameRate(60.0f);
     Time::SetFixedDeltaTime(1.0f / 60.0f);
+
+    // Get the GameSettings instance and load the configuration
+    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
+    if (!settings->Load()) {
+        std::cerr << "Failed to load the game settings! Using defaults." << std::endl;
+        // Continue with defaults
+    }
 
     std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
 
@@ -32,6 +39,15 @@ bool Initialize(SDL_Renderer* renderer) {
 
     collisionManager->AddEntity(player);
 
+    // Apply window settings from the loaded configuration
+    SDL_Window* window = SDL_GetWindowFromID(1);
+    if (window) {
+        SDL_SetWindowSize(window, settings->GetWindowWidth(), settings->GetWindowHeight());
+        if (settings->IsFullscreen()) {
+            SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        }
+    }
+
     return true;
 }
 
@@ -41,7 +57,6 @@ void FixedUpdate() {
 }
 
 void Render(SDL_Renderer* renderer) {
-
     SDL_SetRenderDrawColor(renderer, 0, 0, 32, 255);
     SDL_RenderClear(renderer);
 
@@ -56,7 +71,6 @@ void Render(SDL_Renderer* renderer) {
 }
 
 void Update(SDL_Renderer* renderer) {
-
     Time::Update();
 
     static float accumulator = 0.0f;
@@ -74,8 +88,6 @@ void Update(SDL_Renderer* renderer) {
 }
 
 int main(int argc, char* argv[]) {
-    const int SCREEN_WIDTH = 1920;
-    const int SCREEN_HEIGHT = 1080;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -88,7 +100,20 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    // Register GameSettings singleton before creating the window
+    std::string configPath = SDL_GetBasePath() ? std::string(SDL_GetBasePath()) + "config/config.ini" : "config/config.ini";
+    std::shared_ptr<GameSettings> gameSettings = std::make_shared<GameSettings>(configPath);
+    DependencyInjection::RegisterSingleton<GameSettings>(gameSettings);
+
+    // Try to load settings before creating the window
+    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
+    settings->Load(); // Even if this fails, we'll use defaults
+
+    int screenWidth = settings->GetWindowWidth();
+    int screenHeight = settings->GetWindowHeight();
+
+    SDL_Window* window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                         screenWidth, screenHeight, SDL_WINDOW_SHOWN);
     if (!window) {
         std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
         IMG_Quit();
@@ -103,6 +128,10 @@ int main(int argc, char* argv[]) {
         IMG_Quit();
         SDL_Quit();
         return 1;
+    }
+
+    if (settings->IsFullscreen()) {
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
     }
 
     Initialize(renderer);

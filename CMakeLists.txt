@@ -48,8 +48,8 @@ set(SOURCE_FILES
         src/core/QuadTree.h
         src/core/GameSettings.cpp
         src/core/GameSettings.h
-        src/helpers/IniReader.cpp
-        src/helpers/IniReader.h
+        src/helpers/INIReader.cpp
+        src/helpers/INIReader.h
 )
 
 # Create the executable
@@ -62,9 +62,15 @@ target_link_libraries(SDLProject
         /opt/homebrew/Cellar/sdl2_image/2.8.8/lib/libSDL2_image.dylib
 )
 
-# Post-build command to copy the assets folder to the build directory
+# Post-build command to copy the assets and config files to the build directory
 add_custom_command(TARGET SDLProject POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets
         ${CMAKE_BINARY_DIR}/assets
+)
+
+add_custom_command(TARGET SDLProject POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/config/config.ini
+        ${CMAKE_BINARY_DIR}/config/config.ini
 )
