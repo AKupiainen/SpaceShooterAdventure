@@ -1,5 +1,7 @@
 #include "GameWorld.h"
 #include <algorithm>
+#include <iostream>
+#include <ostream>
 
 GameWorld::GameWorld() {}
 
@@ -13,11 +15,14 @@ GameWorld::~GameWorld() {
 void GameWorld::Update(float deltaTime) {
 
     for (auto& entity : entities) {
-        entity->Update(deltaTime);
-        entity->UpdateCollisionBox();
+        if (entity) {
+            entity->Update(deltaTime);
+            entity->UpdateCollisionBox();
+        }
     }
 
-    for (auto layer : parallaxLayers) {
+
+    for (auto& layer : parallaxLayers) {
         layer->Update(deltaTime);
     }
 
@@ -28,18 +33,21 @@ void GameWorld::Update(float deltaTime) {
 }
 
 void GameWorld::Render(SDL_Renderer* renderer) const {
-
-    for (auto layer : parallaxLayers) {
+    for (auto& layer : parallaxLayers) {
         layer->Render(renderer);
     }
 
     for (auto& entity : entities) {
-        entity->Render(renderer);
+        if (entity) {
+            entity->Render(renderer);
+        }
     }
 }
 
 void GameWorld::AddEntity(std::unique_ptr<GameEntity> entity) {
-    entities.push_back(std::move(entity));
+    if (entity) {
+        entities.push_back(std::move(entity));
+    }
 }
 
 void GameWorld::AddParallaxLayer(ParallaxLayer* layer) {

@@ -21,7 +21,6 @@ bool Initialize(SDL_Renderer* renderer) {
     collisionManager = std::make_shared<CollisionManager>(settings);
     DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
 
-    // Create and register GameWorld
     gameWorld = std::make_shared<GameWorld>();
     DependencyInjection::RegisterSingleton<GameWorld>(gameWorld);
 
