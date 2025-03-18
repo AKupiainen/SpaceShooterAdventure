@@ -35,7 +35,6 @@ void Enemy::Render(SDL_Renderer* renderer) {
     int flameOffsetY = GetHeight();
 
     engineFlame.Render(GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 0.0f);
-    shooter.Render(renderer);
 }
 
 void Enemy::OnCollisionEnter(GameEntity& other)

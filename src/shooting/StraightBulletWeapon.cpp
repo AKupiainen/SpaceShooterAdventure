@@ -32,5 +32,5 @@ void StraightBulletWeapon::Fire(Shooter& shooter)
     );
 
     bullet->SetRotation(static_cast<int>(shooterAngle));
-    shooter.AddBullet(bullet);
+    shooter.AddBullet(std::unique_ptr<Bullet>(bullet));
 }

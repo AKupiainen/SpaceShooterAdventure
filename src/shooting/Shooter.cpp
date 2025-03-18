@@ -3,46 +3,22 @@
 #include "../core/Time.h"
 #include <iostream>
 #include "../core/DependencyInjection.h"
-#include "../core/CollisionManager.h"
+#include "../core/GameWorld.h"
 
 Shooter::Shooter(SDL_Renderer* renderer, int x, int y)
-    : currentWeapon(nullptr), renderer(renderer), playerX(x),
-      playerY(y), shootCooldown(0.5f), timeSinceLastShot(0.0f), rotation(0) {
-    collisionManager = DependencyInjection::Resolve<CollisionManager>();
+    : renderer(renderer), playerX(x),
+      playerY(y) {
 
-    if (!collisionManager) {
-        std::cerr << "Failed to resolve CollisionManager during Shooter initialization!" << std::endl;
+    gameWorld = DependencyInjection::Resolve<GameWorld>();
+
+    if (!gameWorld) {
+        std::cerr << "Failed to resolve GameWorld during Shooter initialization!" << std::endl;
     }
 }
 
-Shooter::~Shooter() {
-    for (Bullet* bullet : bullets) {
-
-        if (collisionManager) {
-            collisionManager->RemoveEntity(bullet);
-        }
-        delete bullet;
-    }
-    bullets.clear();
-}
+Shooter::~Shooter() { }
 
 void Shooter::Update() {
-    for (auto it = bullets.begin(); it != bullets.end();) {
-        Bullet* bullet = *it;
-        bullet->Update();
-
-        if (!bullet->IsActive()) {
-
-            if (collisionManager) {
-                collisionManager->RemoveEntity(bullet);
-            }
-            delete bullet;
-            it = bullets.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
     timeSinceLastShot += Time::GetDeltaTime();
 
     if (currentWeapon && timeSinceLastShot >= shootCooldown) {
@@ -51,10 +27,8 @@ void Shooter::Update() {
     }
 }
 
-void Shooter::Render(SDL_Renderer* renderer) const {
-    for (Bullet* bullet : bullets) {
-        bullet->Render(renderer);
-    }
+void Shooter::SetWeapon(Weapon* weaponPtr) {
+    currentWeapon = weaponPtr;
 }
 
 void Shooter::SetPosition(double x, double y) {
@@ -62,12 +36,11 @@ void Shooter::SetPosition(double x, double y) {
     playerY = y;
 }
 
-void Shooter::AddBullet(Bullet* bullet) {
-    bullets.push_back(bullet);
+void Shooter::AddBullet(std::unique_ptr<Bullet> bullet) const {
 
-    if (collisionManager) {
-        collisionManager->AddEntity(bullet);
+    if (gameWorld) {
+        gameWorld->AddEntity(std::move(bullet));
     } else {
-        std::cerr << "Cannot add bullet to CollisionManager: manager is null!" << std::endl;
+        std::cerr << "Cannot add bullet: GameWorld is null!" << std::endl;
     }
 }

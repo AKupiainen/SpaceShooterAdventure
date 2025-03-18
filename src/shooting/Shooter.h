@@ -1,13 +1,12 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <vector>
+#include <memory>
 #include "Weapon.h"
 
 class Bullet;
-class BulletPath;
 class Weapon;
-class CollisionManager;
+class GameWorld;
 
 class Shooter {
 public:
@@ -15,33 +14,26 @@ public:
     ~Shooter();
 
     void Update();
-    void Render(SDL_Renderer* renderer) const;
     void SetPosition(double x, double y);
 
-    void SetWeapon(Weapon* weaponPtr) {
-        currentWeapon = weaponPtr;
-    }
+    void SetWeapon(Weapon* weaponPtr);
+    void SetShootCooldown(float cooldown);
+    void AddBullet(std::unique_ptr<Bullet> bullet) const;
 
-    [[nodiscard]] float GetShootCooldown() const { return shootCooldown; }
-    void SetShootCooldown(float cooldown) { shootCooldown = cooldown; }
+    double GetX() const { return playerX; }
+    double GetY() const { return playerY; }
 
-    void AddBullet(Bullet* bullet);
+    SDL_Renderer* GetRenderer() const { return renderer; }
 
-    [[nodiscard]] double GetX() const { return playerX; }
-    [[nodiscard]] double GetY() const { return playerY; }
-
-    [[nodiscard]] SDL_Renderer* GetRenderer() const { return renderer; }
-
-    [[nodiscard]] float GetRotation() const { return rotation; }
     void SetRotation(float angle) { rotation = angle; }
+    float GetRotation() const { return rotation; }
 
 private:
-    Weapon* currentWeapon;
-    SDL_Renderer* renderer;
-    double playerX, playerY;
-    float shootCooldown;
-    float timeSinceLastShot;
-    float rotation;
-    std::vector<Bullet*> bullets;
-    std::shared_ptr<CollisionManager> collisionManager;
+    Weapon* currentWeapon = nullptr;
+    SDL_Renderer* renderer = nullptr;
+    double playerX = 0.0, playerY = 0.0;
+    float shootCooldown = 0.5f;
+    float timeSinceLastShot = 0.0f;
+    float rotation = 0.0f;
+    std::shared_ptr<GameWorld> gameWorld;
 };

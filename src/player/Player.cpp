@@ -20,7 +20,7 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
 
 Player::~Player() = default;
 
-void Player::Update() {
+void Player::Update(float deltaTime) {
     const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
     HandleMovement(keystate);
@@ -41,8 +41,6 @@ void Player::Update() {
     if (posY < 0) posY = 0;
     if (posY + GetHeight() > windowHeight) posY = windowHeight - GetHeight();
 
-    UpdateCollisionBox();
-
     animator->Update();
     engineFlame.Update();
 
@@ -57,7 +55,6 @@ void Player::Render(SDL_Renderer* renderer)  {
     int flameOffsetY = GetHeight();
 
     engineFlame.Render(GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 180.0f);
-    shooter.Render(renderer);
 }
 
 void Player::OnCollisionEnter(GameEntity &other)

@@ -54,6 +54,8 @@ set(SOURCE_FILES
         src/enemy/Enemy.h
         src/helpers/Tags.cpp
         src/helpers/Tags.h
+        src/core/GameWorld.cpp
+        src/core/GameWorld.h
 )
 
 # Create the executable
