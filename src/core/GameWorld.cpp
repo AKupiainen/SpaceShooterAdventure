@@ -1,6 +1,5 @@
 #include "GameWorld.h"
 #include <algorithm>
-#include <iostream>
 #include <ostream>
 
 GameWorld::GameWorld() {}
