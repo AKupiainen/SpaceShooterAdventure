@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class IniReader {
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> data;
@@ -21,6 +22,8 @@ public:
 
     [[nodiscard]] bool getBool(const std::string& section, const std::string& key,
                  bool defaultValue = false) const;
+
+    [[nodiscard]] std::vector<std::string> getArray(const std::string& section, const std::string& key) const;
 
 private:
     static std::string trim(const std::string& str);

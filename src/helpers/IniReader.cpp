@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 bool IniReader::loadFile(const std::string& filename) {
     std::ifstream file(filename);
@@ -15,11 +16,10 @@ bool IniReader::loadFile(const std::string& filename) {
 
     std::string line;
     while (std::getline(file, line)) {
-
         line = trim(line);
-
-        if (line.empty() || line[0] == ';' || line[0] == '#')
+        if (line.empty() || line[0] == ';' || line[0] == '#') {
             continue;
+        }
 
         if (line[0] == '[' && line[line.length() - 1] == ']') {
             currentSection = line.substr(1, line.length() - 2);
@@ -76,18 +76,34 @@ bool IniReader::getBool(const std::string& section, const std::string& key,
              bool defaultValue) const {
     std::string value = getString(section, key, "");
     if (!value.empty()) {
-
         std::string lowerValue = value;
         for (char& c : lowerValue) {
             c = std::tolower(c);
         }
 
-        if (lowerValue == "true" || lowerValue == "yes" || lowerValue == "1")
+        if (lowerValue == "true" || lowerValue == "yes" || lowerValue == "1") {
             return true;
-        if (lowerValue == "false" || lowerValue == "no" || lowerValue == "0")
+        }
+        if (lowerValue == "false" || lowerValue == "no" || lowerValue == "0") {
             return false;
+        }
     }
     return defaultValue;
+}
+
+std::vector<std::string> IniReader::getArray(const std::string& section, const std::string& key) const {
+    std::vector<std::string> values;
+    std::string rawValue = getString(section, key, "");
+
+    if (!rawValue.empty()) {
+        std::istringstream stream(rawValue);
+        std::string item;
+        while (std::getline(stream, item, ',')) {
+            values.push_back(trim(item));
+        }
+    }
+
+    return values;
 }
 
 std::string IniReader::trim(const std::string& str) {
