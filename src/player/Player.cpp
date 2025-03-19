@@ -2,7 +2,6 @@
 #include "SDL2/SDL.h"
 #include <iostream>
 #include <cmath>
-
 #include "../helpers/Tags.h"
 #include "../shooting/ShotgunWeapon.h"
 
@@ -22,9 +21,9 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
 Player::~Player() = default;
 
 void Player::Update(float deltaTime) {
-    const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+    const Uint8* keyState = SDL_GetKeyboardState(nullptr);
 
-    HandleMovement(keystate, deltaTime);
+    HandleMovement(keyState, deltaTime);
     HandleMouseMovement(deltaTime);
 
     ClampVelocity();
@@ -117,7 +116,7 @@ void Player::ApplyDeceleration(float deltaTime) {
 
     if (!keyState[SDL_SCANCODE_W] && !keyState[SDL_SCANCODE_S]) {
         if (std::abs(velocityY) > deceleration * deltaTime) {
-            velocityY -= (velocityY > 0 ? deceleration * deltaTime : -deceleration * deltaTime);
+            velocityY -= velocityY > 0 ? deceleration * deltaTime : -deceleration * deltaTime;
         } else {
             velocityY = 0;
         }
@@ -126,7 +125,7 @@ void Player::ApplyDeceleration(float deltaTime) {
     if (!keyState[SDL_SCANCODE_A] && !keyState[SDL_SCANCODE_D]) {
 
         if (std::abs(velocityX) > deceleration * deltaTime) {
-            velocityX -= (velocityX > 0 ? deceleration * deltaTime : -deceleration * deltaTime);
+            velocityX -= velocityX > 0 ? deceleration * deltaTime : -deceleration * deltaTime;
         } else {
             velocityX = 0;
         }

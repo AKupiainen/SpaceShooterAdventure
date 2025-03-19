@@ -1,7 +1,10 @@
 #include "GameWorld.h"
 #include "Time.h"
 
-GameWorld::GameWorld() : collisionManager(nullptr) {}
+GameWorld::GameWorld(SDL_Renderer* renderer)
+    : collisionManager(nullptr) {
+    enemySpawner = std::make_unique<EnemySpawner>(renderer);
+}
 
 GameWorld::~GameWorld() {
     for (auto& layer : parallaxLayers) {
@@ -33,18 +36,23 @@ void GameWorld::SetCollisionManager(CollisionManager* manager) {
 
 void GameWorld::Update(double deltaTime) {
 
+    enemySpawner->Update(deltaTime);
+
+    for (auto* enemy : enemySpawner->GetSpawnedEnemies()) {
+        AddEntity(enemy);
+    }
+
     if (!pendingEntities.empty()) {
         entities.insert(entities.end(), pendingEntities.begin(), pendingEntities.end());
         pendingEntities.clear();
     }
 
-    for (auto it = entities.begin(); it != entities.end(); ) {
+    for (auto it = entities.begin(); it != entities.end();) {
         GameEntity* entity = *it;
 
         if (entity->IsActive()) {
             entity->Update(Time::GetDeltaTime());
             entity->UpdateCollisionBox();
-
             ++it;
         } else {
             delete entity;

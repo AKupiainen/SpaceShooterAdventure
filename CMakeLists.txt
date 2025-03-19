@@ -56,6 +56,10 @@ set(SOURCE_FILES
         src/helpers/Tags.h
         src/core/GameWorld.cpp
         src/core/GameWorld.h
+        src/enemy/EnemySpawner.cpp
+        src/enemy/EnemySpawner.h
+        src/enemy/EnemyConfig.cpp
+        src/enemy/EnemyConfig.h
 )
 
 # Create the executable
@@ -76,6 +80,12 @@ add_custom_command(TARGET SDLProject POST_BUILD
 )
 
 add_custom_command(TARGET SDLProject POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/config/enemy_wave_config.ini
+        ${CMAKE_BINARY_DIR}/config/enemy_wave_config.ini
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/config/enemy_config.ini
+        ${CMAKE_BINARY_DIR}/config/enemy_config.ini
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/config/config.ini
         ${CMAKE_BINARY_DIR}/config/config.ini

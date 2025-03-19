@@ -14,7 +14,7 @@ std::shared_ptr<GameWorld> gameWorld;
 
 bool Initialize(SDL_Renderer* renderer) {
 
-    gameWorld = std::make_shared<GameWorld>();
+    gameWorld = std::make_shared<GameWorld>(renderer);
     DependencyInjection::RegisterSingleton<GameWorld>(gameWorld);
 
     std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
