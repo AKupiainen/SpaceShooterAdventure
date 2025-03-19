@@ -11,7 +11,7 @@ Bullet::~Bullet() {
     delete path;
 }
 
-void Bullet::Update(float deltaTime) {
+void Bullet::Update() {
 
     if (path) {
         path->Update(posX, posY, rotationAngle);

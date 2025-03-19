@@ -2,7 +2,6 @@
 #include "SDL2/SDL.h"
 #include <iostream>
 
-#include "../helpers/DebugLog.h"
 #include "../helpers/Tags.h"
 #include "../shooting/ShotgunWeapon.h"
 
@@ -21,7 +20,7 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
 
 Player::~Player() = default;
 
-void Player::Update(float deltaTime) {
+void Player::Update() {
     const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
     HandleMovement(keystate);

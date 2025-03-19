@@ -11,7 +11,7 @@ public:
           int frameDelay, int rows, int columns, int x, int y, float speedX, float speedY);
     ~Enemy() override;
 
-    void Update(float deltaTime) override;
+    void Update() override;
     void Render(SDL_Renderer* renderer) override;
     void OnCollisionEnter(GameEntity& other) override;
 
