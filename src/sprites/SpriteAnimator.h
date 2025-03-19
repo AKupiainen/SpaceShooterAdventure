@@ -2,8 +2,9 @@
 #define SPRITEANIMATOR_H
 
 #include <SDL2/SDL.h>
-#include <string>
 #include <unordered_map>
+#include <string>
+#include <memory>  // For std::shared_ptr
 
 class SpriteAnimator {
 public:
@@ -14,30 +15,30 @@ public:
     void Update();
     void Render(int x, int y, double angle) const;
 
-    [[nodiscard]] SDL_Rect GetCurrentFrameRect() const;
-    [[nodiscard]] SDL_Texture* GetTexture() const;
-
-    [[nodiscard]] int GetWidth() const;
-    [[nodiscard]] int GetHeight() const;
-    [[nodiscard]] int GetCurrentFrame() const;
+    int GetWidth() const;
+    int GetHeight() const;
+    int GetCurrentFrame() const;
+    SDL_Texture* GetTexture() const;
 
     static void ClearTextureCache();
 
 private:
+    SDL_Texture* LoadTexture(SDL_Renderer* renderer, const std::string& texturePath);
+    SDL_Rect GetCurrentFrameRect() const;
+
     SDL_Renderer* renderer;
     SDL_Texture* texture;
     int frameWidth;
     int frameHeight;
     int frameDelay;
-    int totalFrames;
     int rows;
     int columns;
+    int totalFrames;
     int currentFrameIndex;
     Uint32 lastFrameTime;
-    int currentFrameTime;
+    Uint32 currentFrameTime;
 
-    static std::unordered_map<std::string, SDL_Texture*> textureCache;
-    static SDL_Texture* LoadTexture(SDL_Renderer* renderer, const std::string& texturePath);
+    static std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache;
 };
 
 #endif

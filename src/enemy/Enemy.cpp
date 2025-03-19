@@ -13,10 +13,10 @@ Enemy::Enemy(SDL_Renderer* renderer, const std::string& spriteSheetPath, int fra
 
 Enemy::~Enemy() = default;
 
-void Enemy::Update() {
+void Enemy::Update(float deltaTime) {
 
-    posX += movementSpeedX;
-    posY += movementSpeedY;
+    posX += movementSpeedX * deltaTime;
+    posY += movementSpeedY * deltaTime;
 
     animator->Update();
     engineFlame.Update();

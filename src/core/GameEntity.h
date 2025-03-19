@@ -27,7 +27,7 @@ public:
 
     virtual ~GameEntity();
 
-    virtual void Update() = 0;
+    virtual void Update(float deltaTime) = 0;
     virtual void Render(SDL_Renderer* renderer);
 
     void IncrementRotation(double angleIncrement);

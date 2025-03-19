@@ -2,7 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-std::unordered_map<std::string, SDL_Texture*> SpriteAnimator::textureCache;
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> SpriteAnimator::textureCache;
 
 SpriteAnimator::SpriteAnimator(SDL_Renderer* renderer, const std::string& texturePath,
                                int frameWidth, int frameHeight, int frameDelay, int rows, int columns)
@@ -14,16 +14,13 @@ SpriteAnimator::SpriteAnimator(SDL_Renderer* renderer, const std::string& textur
 }
 
 SpriteAnimator::~SpriteAnimator() {
-    if (texture) {
-        SDL_DestroyTexture(texture);
-    }
 }
 
 SDL_Texture* SpriteAnimator::LoadTexture(SDL_Renderer* renderer, const std::string& texturePath) {
 
     auto it = textureCache.find(texturePath);
     if (it != textureCache.end()) {
-        return it->second;
+        return it->second.get();
     }
 
     SDL_Surface* surface = IMG_Load(texturePath.c_str());
@@ -40,7 +37,7 @@ SDL_Texture* SpriteAnimator::LoadTexture(SDL_Renderer* renderer, const std::stri
         return nullptr;
     }
 
-    textureCache[texturePath] = newTexture;
+    textureCache[texturePath] = std::shared_ptr<SDL_Texture>(newTexture, SDL_DestroyTexture);
     return newTexture;
 }
 
@@ -71,11 +68,3 @@ int SpriteAnimator::GetWidth() const { return frameWidth; }
 int SpriteAnimator::GetHeight() const { return frameHeight; }
 int SpriteAnimator::GetCurrentFrame() const { return currentFrameIndex; }
 SDL_Texture* SpriteAnimator::GetTexture() const { return texture; }
-
-void SpriteAnimator::ClearTextureCache() {
-
-    for (auto& pair : textureCache) {
-        SDL_DestroyTexture(pair.second);
-    }
-    textureCache.clear();
-}

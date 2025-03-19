@@ -1,5 +1,5 @@
 #include "GameWorld.h"
-#include <iostream>
+#include "Time.h"
 
 GameWorld::GameWorld() : collisionManager(nullptr) {}
 
@@ -11,8 +11,6 @@ GameWorld::~GameWorld() {
     for (auto& entity : entities) {
         delete entity;
     }
-
-    SpriteAnimator::ClearTextureCache();
 }
 
 void GameWorld::AddEntity(GameEntity* entity) {
@@ -44,7 +42,7 @@ void GameWorld::Update(double deltaTime) {
         GameEntity* entity = *it;
 
         if (entity->IsActive()) {
-            entity->Update();
+            entity->Update(Time::GetDeltaTime());
             entity->UpdateCollisionBox();
 
             ++it;

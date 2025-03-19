@@ -10,27 +10,27 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
     : GameEntity(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns, x, y),
       engineFlame(renderer),
       shooter(renderer, x, y),
-      velocityX(0), velocityY(0), maxSpeedX(300), maxSpeedY(300), acceleration(5.0f), deceleration(4.0f) {
+      velocityX(0), velocityY(0), maxSpeedX(600), maxSpeedY(600), acceleration(500.0f), deceleration(500.0f) {
 
     SetTag(Tags::Player);
 
-    weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45.0f,25);
+    weapon = std::make_unique<ShotgunWeapon>("assets/sprites/bullets/bullets/shot_3.png", 10, 10, 45, 250);
     shooter.SetWeapon(weapon.get());
 }
 
 Player::~Player() = default;
 
-void Player::Update() {
+void Player::Update(float deltaTime) {
     const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
-    HandleMovement(keystate);
-    HandleMouseMovement();
+    HandleMovement(keystate, deltaTime);
+    HandleMouseMovement(deltaTime);
 
     ClampVelocity();
     ApplyDeceleration();
 
-    posX += velocityX;
-    posY += velocityY;
+    posX += velocityX * deltaTime;
+    posY += velocityY * deltaTime;
 
     SDL_Window* window = SDL_GetWindowFromID(1);
     int windowWidth, windowHeight;
@@ -62,36 +62,36 @@ void Player::OnCollisionEnter(GameEntity &other)
 
 }
 
-void Player::HandleMovement(const Uint8* keyState) {
+void Player::HandleMovement(const Uint8* keyState, float deltaTime) {
     if (keyState[SDL_SCANCODE_W]) {
-        velocityY -= acceleration;
+        velocityY -= acceleration * deltaTime;
     }
     if (keyState[SDL_SCANCODE_S]) {
-        velocityY += acceleration;
+        velocityY += acceleration * deltaTime;
     }
     if (keyState[SDL_SCANCODE_A]) {
-        velocityX -= acceleration;
+        velocityX -= acceleration * deltaTime;
     }
     if (keyState[SDL_SCANCODE_D]) {
-        velocityX += acceleration;
+        velocityX += acceleration * deltaTime;
     }
 }
 
-void Player::HandleMouseMovement() {
+auto Player::HandleMouseMovement(float deltaTime) -> void {
     int mouseX, mouseY;
     Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
     if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         if (mouseX < posX) {
-            velocityX -= acceleration;
+            velocityX -= acceleration * deltaTime;
         } else if (mouseX > posX + GetWidth()) {
-            velocityX += acceleration;
+            velocityX += acceleration * deltaTime;
         }
 
         if (mouseY < posY) {
-            velocityY -= acceleration;
+            velocityY -= acceleration * deltaTime;
         } else if (mouseY > posY + GetHeight()) {
-            velocityY += acceleration;
+            velocityY += acceleration * deltaTime;
         }
     }
 }
