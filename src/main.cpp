@@ -9,20 +9,22 @@
 #include "core/GameSettings.h"
 #include "core/GameWorld.h"
 
-std::shared_ptr<CollisionManager> collisionManager = nullptr;
-std::shared_ptr<GameWorld> gameWorld = nullptr;
+Player* player = nullptr;
+std::shared_ptr<GameWorld> gameWorld;
 
 bool Initialize(SDL_Renderer* renderer) {
+
+    gameWorld = std::make_shared<GameWorld>();
+    DependencyInjection::RegisterSingleton<GameWorld>(gameWorld);
+
     std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
+
     if (!settings->Load()) {
         std::cerr << "Failed to load the game settings! Using defaults." << std::endl;
     }
 
-    collisionManager = std::make_shared<CollisionManager>(settings);
-    DependencyInjection::RegisterSingleton<CollisionManager>(collisionManager);
-
-    gameWorld = std::make_shared<GameWorld>();
-    DependencyInjection::RegisterSingleton<GameWorld>(gameWorld);
+    auto* collisionManager = new CollisionManager(settings);
+    gameWorld->SetCollisionManager(collisionManager);
 
     Time::Init();
     Time::SetTargetFrameRate(60.0f);
@@ -30,21 +32,13 @@ bool Initialize(SDL_Renderer* renderer) {
 
     std::string basePath = SDL_GetBasePath() ? SDL_GetBasePath() : "";
 
-    ParallaxLayer* layer1 = new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer1.png").c_str(), -20.0f);
-    ParallaxLayer* layer2 = new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer2.png").c_str(), -30.0f);
+    gameWorld->AddParallaxLayer(new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer1.png").c_str(), -20.0f));
+    gameWorld->AddParallaxLayer(new ParallaxLayer(renderer, (basePath + "assets/sprites/parallax/layer2.png").c_str(), -30.0f));
 
-    gameWorld->AddParallaxLayer(layer1);
-    gameWorld->AddParallaxLayer(layer2);
-
-    Player* player = new Player(renderer, (basePath + "assets/sprites/ships/player_ship.png").c_str(), 148, 188, 10, 5, 5, 100, 100);
+    player = new Player(renderer, (basePath + "assets/sprites/ships/player_ship.png").c_str(), 148, 188, 10, 5, 5, 100, 100);
     player->IncrementRotation(180);
 
-    std::unique_ptr<GameEntity> playerEntity(player);
-    gameWorld->AddEntity(std::move(playerEntity));
-
-    Player* playerPtr = static_cast<Player*>(gameWorld->getEntities().back().get());
-
-    collisionManager->AddEntity(playerPtr);
+    gameWorld->AddEntity(player);
 
     if (SDL_Window* window = SDL_GetWindowFromID(1)) {
         SDL_SetWindowSize(window, settings->GetWindowWidth(), settings->GetWindowHeight());
@@ -56,38 +50,33 @@ bool Initialize(SDL_Renderer* renderer) {
     return true;
 }
 
-void FixedUpdate() {
-
-    collisionManager->CheckCollisions();
-}
-
-void Render(SDL_Renderer* renderer) {
+void Render(SDL_Renderer* renderer){
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 32, 255);
     SDL_RenderClear(renderer);
 
     gameWorld->Render(renderer);
-    collisionManager->DrawCollisionBoxes(renderer);
 
     SDL_RenderPresent(renderer);
 }
 
 void Update(SDL_Renderer* renderer) {
+
     Time::Update();
 
     static float accumulator = 0.0f;
     accumulator += Time::GetDeltaTime();
 
     while (accumulator >= Time::GetFixedDeltaTime()) {
-        FixedUpdate();
+        gameWorld->Update(Time::GetDeltaTime());
         accumulator -= Time::GetFixedDeltaTime();
     }
 
-    gameWorld->Update(Time::GetDeltaTime());
     Render(renderer);
 }
 
 int main(int argc, char* argv[]) {
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -103,11 +92,10 @@ int main(int argc, char* argv[]) {
     std::shared_ptr<GameSettings> gameSettings = std::make_shared<GameSettings>(configPath);
     DependencyInjection::RegisterSingleton<GameSettings>(gameSettings);
 
-    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
-    settings->Load();
+    gameSettings->Load();
 
-    int screenWidth = settings->GetWindowWidth();
-    int screenHeight = settings->GetWindowHeight();
+    int screenWidth = gameSettings->GetWindowWidth();
+    int screenHeight = gameSettings->GetWindowHeight();
 
     SDL_Window* window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                          screenWidth, screenHeight, SDL_WINDOW_SHOWN);
@@ -127,7 +115,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    if (settings->IsFullscreen()) {
+    if (gameSettings->IsFullscreen()) {
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
     }
 
@@ -147,11 +135,10 @@ int main(int argc, char* argv[]) {
         Time::LimitFrameRate();
     }
 
-    SpriteAnimator::ClearTextureCache();
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
     SDL_Quit();
+
     return 0;
 }

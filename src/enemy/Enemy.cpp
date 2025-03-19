@@ -6,7 +6,6 @@ Enemy::Enemy(SDL_Renderer* renderer, const std::string& spriteSheetPath, int fra
              int frameDelay, int rows, int columns, int x, int y, float speedX, float speedY)
     : GameEntity(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns, x, y),
       engineFlame(renderer),
-      shooter(renderer, x, y),
       movementSpeedX(speedX), movementSpeedY(speedY) {
 
     SetTag(Tags::Enemy);
@@ -21,10 +20,6 @@ void Enemy::Update(float deltaTime) {
 
     animator->Update();
     engineFlame.Update();
-
-    shooter.Update();
-
-    UpdateCollisionBox();
 }
 
 void Enemy::Render(SDL_Renderer* renderer) {

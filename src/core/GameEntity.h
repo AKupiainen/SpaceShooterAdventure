@@ -27,13 +27,14 @@ public:
 
     virtual ~GameEntity();
 
-    virtual void Update(float deltaTime) = 0;
+    virtual void Update() = 0;
     virtual void Render(SDL_Renderer* renderer);
 
     void IncrementRotation(double angleIncrement);
     void UpdateCollisionBox();
 
     [[nodiscard]] bool CheckCollision(const GameEntity& other) const;
+
     [[nodiscard]] int GetPosX() const { return static_cast<int>(posX); }
     [[nodiscard]] int GetPosY() const { return static_cast<int>(posY); }
     [[nodiscard]] int GetWidth() const { return width; }
@@ -41,14 +42,14 @@ public:
 
     [[nodiscard]] SDL_Texture* GetTexture() const { return animator->GetTexture(); }
 
+    [[nodiscard]] bool IsActive() const { return active; }
+
     void SetRotation(int angleIncrement) { rotationAngle = angleIncrement; }
 
     CollisionBox& GetCollisionBox() { return collisionBox; }
 
     void SetTag(const std::string& newTag) { tag = newTag; }
     [[nodiscard]] const std::string& GetTag() const { return tag; }
-
-    [[nodiscard]] bool IsActive() const { return active; }
 
     virtual void OnCollisionEnter(GameEntity& other);
 

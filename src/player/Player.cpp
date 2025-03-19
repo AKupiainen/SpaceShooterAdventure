@@ -2,6 +2,7 @@
 #include "SDL2/SDL.h"
 #include <iostream>
 
+#include "../helpers/DebugLog.h"
 #include "../helpers/Tags.h"
 #include "../shooting/ShotgunWeapon.h"
 

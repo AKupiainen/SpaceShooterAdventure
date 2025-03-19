@@ -4,6 +4,8 @@
 #include "Shooter.h"
 #include "Bullet.h"
 #include "StraightBulletPath.h"
+#include "../core/DependencyInjection.h"
+#include "../core/GameWorld.h"
 
 StraightBulletWeapon::StraightBulletWeapon(std::string  bulletTexturePath, int bulletWidth, int bulletHeight)
     : bulletTexturePath(std::move(bulletTexturePath)), bulletWidth(bulletWidth), bulletHeight(bulletHeight) {
@@ -11,6 +13,13 @@ StraightBulletWeapon::StraightBulletWeapon(std::string  bulletTexturePath, int b
 
 void StraightBulletWeapon::Fire(Shooter& shooter)
 {
+    auto gameWorld = DependencyInjection::Resolve<GameWorld>();
+
+    if (!gameWorld) {
+        std::cerr << "Error: GameWorld not found in DependencyInjection!" << std::endl;
+        return;
+    }
+
     double speed = 300.0f;
 
     double shooterAngle = shooter.GetRotation();
@@ -32,5 +41,5 @@ void StraightBulletWeapon::Fire(Shooter& shooter)
     );
 
     bullet->SetRotation(static_cast<int>(shooterAngle));
-    shooter.AddBullet(std::unique_ptr<Bullet>(bullet));
+    gameWorld->AddEntity(bullet);
 }

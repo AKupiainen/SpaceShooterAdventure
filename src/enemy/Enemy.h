@@ -18,7 +18,6 @@ public:
 private:
 
     EngineFlame engineFlame;
-    Shooter shooter;
 
     float movementSpeedX;
     float movementSpeedY;

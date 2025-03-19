@@ -1,26 +1,28 @@
-#pragma once
+#ifndef GAMEWORLD_H
+#define GAMEWORLD_H
 
 #include <vector>
-#include <SDL2/SDL.h>
+#include "GameEntity.h"
 #include "../sprites/ParallaxLayer.h"
-#include "../core/GameEntity.h"
+#include "CollisionManager.h"
 
 class GameWorld {
-    std::vector<std::unique_ptr<GameEntity>> entities;
-    std::vector<ParallaxLayer*> parallaxLayers;
-
 public:
     GameWorld();
     ~GameWorld();
 
-    void Update(float deltaTime);
-    void Render(SDL_Renderer* renderer) const;
-    void AddEntity(std::unique_ptr<GameEntity> entity);
+    void AddEntity(GameEntity* entity);
     void AddParallaxLayer(ParallaxLayer* layer);
+    void SetCollisionManager(CollisionManager* manager);
 
-    void Clear();
+    void Update(double deltaTime);
+    void Render(SDL_Renderer* renderer) const;
 
-    const std::vector<std::unique_ptr<GameEntity>>& getEntities() const {
-        return entities;
-    }
+private:
+    std::vector<GameEntity*> entities;
+    std::vector<GameEntity*> pendingEntities;
+    std::vector<ParallaxLayer*> parallaxLayers;
+    CollisionManager* collisionManager;
 };
+
+#endif
