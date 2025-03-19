@@ -1,10 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include "SDL2/SDL.h"
 #include "../core/GameEntity.h"
-#include "EngineFlame.h"
+#include "../player/EngineFlame.h"
 #include "../shooting/Shooter.h"
 #include "../shooting/Weapon.h"
-#include <SDL2/SDL.h>
 
 class Player : public GameEntity {
 public:
@@ -20,13 +22,16 @@ private:
     void HandleMovement(const Uint8* keyState, float deltaTime);
     void HandleMouseMovement(float deltaTime);
     void ClampVelocity();
-    void ApplyDeceleration();
+    void ApplyDeceleration(float deltaTime);
 
     EngineFlame engineFlame;
     Shooter shooter;
     std::unique_ptr<Weapon> weapon;
 
-    float velocityX, velocityY;
-    const float maxSpeedX, maxSpeedY;
-    const float acceleration, deceleration;
+    float velocityX;
+    float velocityY;
+    float maxSpeedX;
+    float maxSpeedY;
+    float acceleration;
+    float deceleration;
 };

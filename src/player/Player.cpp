@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "SDL2/SDL.h"
 #include <iostream>
+#include <cmath>
 
 #include "../helpers/Tags.h"
 #include "../shooting/ShotgunWeapon.h"
@@ -10,7 +11,7 @@ Player::Player(SDL_Renderer* renderer, const std::string& spriteSheetPath, int f
     : GameEntity(renderer, spriteSheetPath, frameWidth, frameHeight, frameDelay, rows, columns, x, y),
       engineFlame(renderer),
       shooter(renderer, x, y),
-      velocityX(0), velocityY(0), maxSpeedX(600), maxSpeedY(600), acceleration(500.0f), deceleration(500.0f) {
+      velocityX(0), velocityY(0), maxSpeedX(600), maxSpeedY(600), acceleration(1000.0f), deceleration(1000.0f) {
 
     SetTag(Tags::Player);
 
@@ -27,7 +28,7 @@ void Player::Update(float deltaTime) {
     HandleMouseMovement(deltaTime);
 
     ClampVelocity();
-    ApplyDeceleration();
+    ApplyDeceleration(deltaTime);
 
     posX += velocityX * deltaTime;
     posY += velocityY * deltaTime;
@@ -77,21 +78,29 @@ void Player::HandleMovement(const Uint8* keyState, float deltaTime) {
     }
 }
 
-auto Player::HandleMouseMovement(float deltaTime) -> void {
+void Player::HandleMouseMovement(float deltaTime) {
     int mouseX, mouseY;
     Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 
     if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-        if (mouseX < posX) {
-            velocityX -= acceleration * deltaTime;
-        } else if (mouseX > posX + GetWidth()) {
-            velocityX += acceleration * deltaTime;
-        }
 
-        if (mouseY < posY) {
-            velocityY -= acceleration * deltaTime;
-        } else if (mouseY > posY + GetHeight()) {
-            velocityY += acceleration * deltaTime;
+        float dirX = mouseX - (posX + GetWidth() / 2);
+        float dirY = mouseY - (posY + GetHeight() / 2);
+
+        float distance = sqrt(dirX * dirX + dirY * dirY);
+        float threshold = GetWidth() * 0.5f;
+
+        if (distance > threshold) {
+
+            dirX /= distance;
+            dirY /= distance;
+
+            velocityX = dirX * acceleration;
+            velocityY = dirY * acceleration;
+        } else {
+
+            velocityX = 0.0f;
+            velocityY = 0.0f;
         }
     }
 }
@@ -103,18 +112,21 @@ void Player::ClampVelocity() {
     if (velocityY < -maxSpeedY) velocityY = -maxSpeedY;
 }
 
-void Player::ApplyDeceleration() {
-    if (!SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W] && !SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
-        if (std::abs(velocityY) > deceleration) {
-            velocityY -= (velocityY > 0 ? deceleration : -deceleration);
+void Player::ApplyDeceleration(float deltaTime) {
+    const Uint8* keyState = SDL_GetKeyboardState(nullptr);
+
+    if (!keyState[SDL_SCANCODE_W] && !keyState[SDL_SCANCODE_S]) {
+        if (std::abs(velocityY) > deceleration * deltaTime) {
+            velocityY -= (velocityY > 0 ? deceleration * deltaTime : -deceleration * deltaTime);
         } else {
             velocityY = 0;
         }
     }
 
-    if (!SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A] && !SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
-        if (std::abs(velocityX) > deceleration) {
-            velocityX -= (velocityX > 0 ? deceleration : -deceleration);
+    if (!keyState[SDL_SCANCODE_A] && !keyState[SDL_SCANCODE_D]) {
+
+        if (std::abs(velocityX) > deceleration * deltaTime) {
+            velocityX -= (velocityX > 0 ? deceleration * deltaTime : -deceleration * deltaTime);
         } else {
             velocityX = 0;
         }

@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <unordered_map>
 #include <string>
-#include <memory>  // For std::shared_ptr
+#include <memory>
 
 class SpriteAnimator {
 public:
