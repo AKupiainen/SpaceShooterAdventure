@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../core/GameEntity.h"
-#include "../player//EngineFlame.h"
-#include "../shooting/Shooter.h"
+#include "../player/EngineFlame.h"
 #include <SDL2/SDL.h>
 
 class Enemy : public GameEntity {

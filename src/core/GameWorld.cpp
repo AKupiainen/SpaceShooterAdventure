@@ -38,10 +38,6 @@ void GameWorld::Update(double deltaTime) {
 
     enemySpawner->Update(deltaTime);
 
-    for (auto* enemy : enemySpawner->GetSpawnedEnemies()) {
-        AddEntity(enemy);
-    }
-
     if (!pendingEntities.empty()) {
         entities.insert(entities.end(), pendingEntities.begin(), pendingEntities.end());
         pendingEntities.clear();

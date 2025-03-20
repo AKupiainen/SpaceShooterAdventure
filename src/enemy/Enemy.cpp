@@ -29,7 +29,7 @@ void Enemy::Render(SDL_Renderer* renderer) {
     int flameOffsetX = GetWidth() / 2 - engineFlame.GetAnimator().GetWidth() / 2;
     int flameOffsetY = GetHeight();
 
-    engineFlame.Render(GetPosX() + flameOffsetX, GetPosY() + flameOffsetY * 0.5f, 0.0f);
+    engineFlame.Render(GetPosX() + flameOffsetX, GetPosY() - flameOffsetY * 0.75f, 0.0f);
 }
 
 void Enemy::OnCollisionEnter(GameEntity& other)

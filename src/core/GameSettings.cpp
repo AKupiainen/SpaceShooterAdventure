@@ -5,14 +5,14 @@ GameSettings::GameSettings(std::string  iniFile)
     : iniFile(std::move(iniFile)), windowWidth(1920), windowHeight(1080), fullscreen(false) {}
 
 bool GameSettings::Load() {
-    if (!iniReader.loadFile(iniFile)) {
+    if (!iniReader.LoadFile(iniFile)) {
         std::cerr << "Failed to load INI file: " << iniFile << std::endl;
         return false;
     }
 
-    windowWidth = iniReader.getInt("Graphics", "ScreenWidth", 1920);
-    windowHeight = iniReader.getInt("Graphics", "ScreenHeight", 1080);
-    fullscreen = iniReader.getBool("Graphics", "Fullscreen", false);
+    windowWidth = iniReader.GetInt("Graphics", "ScreenWidth", 1920);
+    windowHeight = iniReader.GetInt("Graphics", "ScreenHeight", 1080);
+    fullscreen = iniReader.GetBool("Graphics", "Fullscreen", false);
 
     return true;
 }

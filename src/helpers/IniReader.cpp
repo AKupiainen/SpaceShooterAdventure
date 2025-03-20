@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-bool IniReader::loadFile(const std::string& filename) {
+bool IniReader::LoadFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
@@ -16,7 +16,7 @@ bool IniReader::loadFile(const std::string& filename) {
 
     std::string line;
     while (std::getline(file, line)) {
-        line = trim(line);
+        line = Trim(line);
         if (line.empty() || line[0] == ';' || line[0] == '#') {
             continue;
         }
@@ -28,8 +28,8 @@ bool IniReader::loadFile(const std::string& filename) {
 
         size_t delimiterPos = line.find('=');
         if (delimiterPos != std::string::npos) {
-            std::string key = trim(line.substr(0, delimiterPos));
-            std::string value = trim(line.substr(delimiterPos + 1));
+            std::string key = Trim(line.substr(0, delimiterPos));
+            std::string value = Trim(line.substr(delimiterPos + 1));
             data[currentSection][key] = value;
         }
     }
@@ -38,7 +38,7 @@ bool IniReader::loadFile(const std::string& filename) {
     return true;
 }
 
-std::string IniReader::getString(const std::string& section, const std::string& key,
+std::string IniReader::GetString(const std::string& section, const std::string& key,
                       const std::string& defaultValue) const {
     if (data.count(section) && data.at(section).count(key)) {
         return data.at(section).at(key);
@@ -46,10 +46,10 @@ std::string IniReader::getString(const std::string& section, const std::string& 
     return defaultValue;
 }
 
-int IniReader::getInt(const std::string& section, const std::string& key,
+int IniReader::GetInt(const std::string& section, const std::string& key,
            int defaultValue) const {
     try {
-        std::string value = getString(section, key, "");
+        std::string value = GetString(section, key, "");
         if (!value.empty()) {
             return std::stoi(value);
         }
@@ -59,10 +59,10 @@ int IniReader::getInt(const std::string& section, const std::string& key,
     return defaultValue;
 }
 
-float IniReader::getFloat(const std::string& section, const std::string& key,
+float IniReader::GetFloat(const std::string& section, const std::string& key,
                float defaultValue) const {
     try {
-        std::string value = getString(section, key, "");
+        std::string value = GetString(section, key, "");
         if (!value.empty()) {
             return std::stof(value);
         }
@@ -72,9 +72,9 @@ float IniReader::getFloat(const std::string& section, const std::string& key,
     return defaultValue;
 }
 
-bool IniReader::getBool(const std::string& section, const std::string& key,
+bool IniReader::GetBool(const std::string& section, const std::string& key,
              bool defaultValue) const {
-    std::string value = getString(section, key, "");
+    std::string value = GetString(section, key, "");
     if (!value.empty()) {
         std::string lowerValue = value;
         for (char& c : lowerValue) {
@@ -91,22 +91,22 @@ bool IniReader::getBool(const std::string& section, const std::string& key,
     return defaultValue;
 }
 
-std::vector<std::string> IniReader::getArray(const std::string& section, const std::string& key) const {
+std::vector<std::string> IniReader::GetArray(const std::string& section, const std::string& key) const {
     std::vector<std::string> values;
-    std::string rawValue = getString(section, key, "");
+    std::string rawValue = GetString(section, key, "");
 
     if (!rawValue.empty()) {
         std::istringstream stream(rawValue);
         std::string item;
         while (std::getline(stream, item, ',')) {
-            values.push_back(trim(item));
+            values.push_back(Trim(item));
         }
     }
 
     return values;
 }
 
-std::string IniReader::trim(const std::string& str) {
+std::string IniReader::Trim(const std::string& str) {
     const std::string whitespace = " \t\r\n";
     size_t start = str.find_first_not_of(whitespace);
     if (start == std::string::npos) {
