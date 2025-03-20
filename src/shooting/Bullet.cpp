@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SDL_render.h>
 
+#include "../helpers/Tags.h"
+
 Bullet::Bullet(SDL_Renderer* renderer, int x, int y, BulletPath* path, int width, int height, const std::string& texturePath)
     : GameEntity(renderer, texturePath, width, height, 100, 1, 1, x, y), path(path) {
 }
@@ -38,5 +40,7 @@ void Bullet::Render(SDL_Renderer* renderer) {
 
 void Bullet::OnCollisionEnter(GameEntity &other)
 {
-
+    if (other.GetTag() == Tags::Enemy) {
+        other.SetActive(false);
+    }
 }

@@ -78,8 +78,4 @@ void GameWorld::Render(SDL_Renderer* renderer) const {
             entity->Render(renderer);
         }
     }
-
-    if (collisionManager) {
-        collisionManager->DrawCollisionBoxes(renderer);
-    }
 }

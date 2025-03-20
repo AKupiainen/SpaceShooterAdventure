@@ -8,16 +8,13 @@
 
 class EnemySpawner {
 public:
-
     EnemySpawner(SDL_Renderer* renderer);
 
     void LoadWaves(const std::string& iniFile);
     void Update(float deltaTime);
     void SpawnEnemiesForWave();
-    std::vector<Enemy*> GetSpawnedEnemies() const;
 
 private:
-
     struct EnemyWave {
         std::string enemyType;
         int count;
@@ -32,10 +29,10 @@ private:
     float spawnTimer;
 
     void SpawnEnemiesInFormation(const EnemyWave& wave);
-    void SpawnEnemiesInGrid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY);
-    void SpawnEnemiesInPyramid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY);
-    void SpawnEnemiesInCircle(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY);
-    void SpawnEnemiesInLine(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY);
+    void SpawnEnemiesInGrid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth);
+    void SpawnEnemiesInPyramid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth);
+    void SpawnEnemiesInCircle(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth);
+    void SpawnEnemiesInLine(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth);
     void SpawnEnemy(int x, int y, const EnemyConfig::EnemyData& enemyData);
 };
 

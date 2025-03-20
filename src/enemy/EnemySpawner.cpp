@@ -56,26 +56,32 @@ void EnemySpawner::SpawnEnemiesForWave() {
 }
 
 void EnemySpawner::SpawnEnemiesInFormation(const EnemyWave& wave) {
-    int screenWidth = 800;
-    int screenHeight = 600;
-    int spawnY = -50;
+    std::shared_ptr<GameSettings> settings = DependencyInjection::Resolve<GameSettings>();
+
+    int screenWidth = settings->GetWindowWidth();
 
     if (const EnemyConfig::EnemyData* enemyData = enemyConfig.GetEnemyData(wave.enemyType)) {
         if (wave.formation == "grid") {
-            SpawnEnemiesInGrid(wave, *enemyData, screenWidth, spawnY);
+            SpawnEnemiesInGrid(wave, *enemyData, screenWidth);
         } else if (wave.formation == "pyramid") {
-            SpawnEnemiesInPyramid(wave, *enemyData, screenWidth, spawnY);
+            SpawnEnemiesInPyramid(wave, *enemyData, screenWidth);
         } else if (wave.formation == "circle") {
-            SpawnEnemiesInCircle(wave, *enemyData, screenWidth, spawnY);
+            SpawnEnemiesInCircle(wave, *enemyData, screenWidth);
         } else if (wave.formation == "line") {
-            SpawnEnemiesInLine(wave, *enemyData, screenWidth, spawnY);
+            SpawnEnemiesInLine(wave, *enemyData, screenWidth);
         }
     }
 }
 
-void EnemySpawner::SpawnEnemiesInGrid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY) {
+void EnemySpawner::SpawnEnemiesInGrid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth) {
     int cols = std::ceil(std::sqrt(wave.count));
     int rows = std::ceil(static_cast<float>(wave.count) / cols);
+
+    // Determine total height of formation to ensure it starts completely off-screen
+    int formationHeight = rows * enemyData.frameHeight;
+    int spawnY = -formationHeight;
+
+    // Center the grid horizontally
     int startX = (screenWidth - (cols * enemyData.frameWidth)) / 2;
 
     for (int i = 0; i < wave.count; ++i) {
@@ -88,8 +94,14 @@ void EnemySpawner::SpawnEnemiesInGrid(const EnemyWave& wave, const EnemyConfig::
     }
 }
 
-void EnemySpawner::SpawnEnemiesInPyramid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY) {
+void EnemySpawner::SpawnEnemiesInPyramid(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth) {
     int baseSize = std::ceil(std::sqrt(2 * wave.count));
+
+    // Determine total height of pyramid to ensure it starts completely off-screen
+    int formationHeight = baseSize * enemyData.frameHeight;
+    int spawnY = -formationHeight;
+
+    // Center the pyramid horizontally
     int startX = (screenWidth - (baseSize * enemyData.frameWidth)) / 2;
 
     int index = 0;
@@ -104,10 +116,11 @@ void EnemySpawner::SpawnEnemiesInPyramid(const EnemyWave& wave, const EnemyConfi
     }
 }
 
-void EnemySpawner::SpawnEnemiesInCircle(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY) {
+void EnemySpawner::SpawnEnemiesInCircle(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth) {
     int radius = 100;
+
     int centerX = screenWidth / 2;
-    int centerY = spawnY - radius;
+    int centerY = -radius; 
 
     for (int i = 0; i < wave.count; ++i) {
         float angle = (2.0f * M_PI * i) / wave.count;
@@ -118,8 +131,12 @@ void EnemySpawner::SpawnEnemiesInCircle(const EnemyWave& wave, const EnemyConfig
     }
 }
 
-void EnemySpawner::SpawnEnemiesInLine(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth, int spawnY) {
+void EnemySpawner::SpawnEnemiesInLine(const EnemyWave& wave, const EnemyConfig::EnemyData& enemyData, int screenWidth) {
+
     int startX = (screenWidth - (wave.count * enemyData.frameWidth)) / 2;
+
+    int spawnY = -enemyData.frameHeight;
+
     for (int i = 0; i < wave.count; ++i) {
         int x = startX + i * enemyData.frameWidth;
         SpawnEnemy(x, spawnY, enemyData);

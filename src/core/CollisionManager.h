@@ -14,7 +14,6 @@ public:
     void AddEntity(GameEntity* entity);
     void RemoveEntity(const GameEntity* entity);
     void CheckCollisions() const;
-    void DrawCollisionBoxes(SDL_Renderer* renderer) const;
 
     bool Contains(const GameEntity* entity) const;
 

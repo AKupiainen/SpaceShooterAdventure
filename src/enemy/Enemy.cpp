@@ -15,8 +15,7 @@ Enemy::~Enemy() = default;
 
 void Enemy::Update(float deltaTime) {
 
-    posX += movementSpeedX * deltaTime;
-    posY += movementSpeedY * deltaTime;
+    posY += 2;
 
     animator->Update();
     engineFlame.Update();

@@ -43,6 +43,7 @@ public:
     [[nodiscard]] SDL_Texture* GetTexture() const { return animator->GetTexture(); }
 
     [[nodiscard]] bool IsActive() const { return active; }
+    void SetActive(bool state) { active = state;}
 
     void SetRotation(int angleIncrement) { rotationAngle = angleIncrement; }
 
